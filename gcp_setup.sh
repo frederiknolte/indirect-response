@@ -18,3 +18,5 @@ python -m spacy download en_core_web_sm
 cd ..
 
 pip install ./datasets/
+
+cd google-research/wt5
