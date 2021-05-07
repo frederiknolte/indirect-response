@@ -20,3 +20,6 @@ cd ..
 pip install ./datasets/
 
 cd google-research/wt5
+
+PATH=$PATH:~/.local/bin
+PYTHONPATH=$PYTHONPATH:~/indirect-response/google-research/
