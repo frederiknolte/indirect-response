@@ -105,7 +105,7 @@ class Circa(tfds.core.GeneratorBasedBuilder):
 
             for line in tsv_reader:
                 for k, v in line.items():
-                    # line[k] = v.replace('’', "'")  # the original file had the wrong type of apostrophe
+                    line[k] = v.replace('’', "'")  # the original file had the wrong type of apostrophe
                     line[k] = v.replace(
                         "\xe2\x80\x99", "'"
                     )  # the original file had the wrong type of apostrophe
