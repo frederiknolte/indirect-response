@@ -78,8 +78,8 @@ class Circa(tfds.core.GeneratorBasedBuilder):
     def _split_generators(self, dl_manager: tfds.download.DownloadManager):
         """Returns SplitGenerators."""
         # TODO: pass this as a param or set as global?
-        path = "/home/lcur0357/indirect-response/circa/circa-data.tsv"
-        # path = dl_manager.download_and_extract('https://raw.githubusercontent.com/google-research-datasets/circa/main/circa-data.tsv')
+        # path = "/home/lcur0357/indirect-response/circa/circa-data.tsv"
+        path = dl_manager.download_and_extract('https://raw.githubusercontent.com/google-research-datasets/circa/main/circa-data.tsv')
         # TODO: train/test split?
         # TODO(circa): Returns the Dict[split names, Iterator[Key, Example]]
         return {
