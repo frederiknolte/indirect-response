@@ -78,8 +78,6 @@ class Circa(tfds.core.GeneratorBasedBuilder):
 
     def _split_generators(self, dl_manager: tfds.download.DownloadManager):
         """Returns SplitGenerators."""
-        # TODO: pass this as a param or set as global?
-        # path = "/home/lcur0357/indirect-response/circa/circa-data.tsv"
         path = dl_manager.download_and_extract('https://raw.githubusercontent.com/google-research-datasets/circa/main/circa-data.tsv')
         # TODO: train/test split?
         # TODO(circa): Returns the Dict[split names, Iterator[Key, Example]]
@@ -106,9 +104,8 @@ class Circa(tfds.core.GeneratorBasedBuilder):
 
             for line in tsv_reader:
                 for k, v in line.items():
-                    # TODO: decode judgements as well
-                    if 'goldstandard' in k:
-                        line[k] = unidecode(v)
+                    if ('goldstandard' in k) or ('judgements' in k):
+                        line[k] = unidecode(v) # strange apostrophe in text
 
                 line_id = np.array([int(line["id"])])
                 line["id"] = line_id
