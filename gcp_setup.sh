@@ -19,6 +19,6 @@ cd ..
 
 pip install ./datasets/
 
-pip install sacrebleu==1.4.0
+pip install -r ./requirements.txt
 
 tfds build circa/circa
