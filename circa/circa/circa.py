@@ -1,6 +1,7 @@
 """circa dataset."""
 
 import csv
+import os
 
 import numpy as np
 import tensorflow as tf
@@ -19,6 +20,8 @@ _CITATION = """
   booktitle =   "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing",
   year =        "2020",
 """
+
+_URL = "https://raw.githubusercontent.com/google-research-datasets/circa/main/"
 
 
 class Circa(tfds.core.GeneratorBasedBuilder):
@@ -72,22 +75,25 @@ class Circa(tfds.core.GeneratorBasedBuilder):
             # features, specify them here. They'll be used if
             # `as_supervised=True` in `builder.as_dataset`.
             supervised_keys=("answer_y", "goldstandard1"),  # Set to `None` to disable
-            homepage="https://dataset-homepage/",
+            homepage="https://github.com/google-research-datasets/circa",
             citation=_CITATION,
         )
 
     def _split_generators(self, dl_manager: tfds.download.DownloadManager):
         """Returns SplitGenerators."""
-        # TODO: pass this as a param or set as global?
-        # path = "/home/lcur0357/indirect-response/circa/circa-data.tsv"
-        path = dl_manager.download_and_extract('https://raw.githubusercontent.com/google-research-datasets/circa/main/circa-data.tsv')
-        # TODO: train/test split?
-        # TODO(circa): Returns the Dict[split names, Iterator[Key, Example]]
-        return {
-            "train": self._generate_examples(path),
-        }
 
-    def _generate_examples(self, path):
+        files = dl_manager.download_and_extract({
+            'train': [os.path.join(_URL, 'circa-data.tsv')]
+        })
+
+        return [
+            tfds.core.SplitGenerator(
+                name=tfds.Split.TRAIN,
+                gen_kwargs={'files': files['train']},
+            )
+        ]
+
+    def _generate_examples(self, files):
         """Yields examples."""
         column_names = [
             "id",
@@ -100,17 +106,19 @@ class Circa(tfds.core.GeneratorBasedBuilder):
             "goldstandard2",
         ]
 
-        with open(path) as infile:
-            tsv_reader = csv.DictReader(infile, delimiter="\t", fieldnames=column_names)
-            next(tsv_reader)  # skip header row
+        for filepath in files:
+            with tf.io.gfile.GFile(filepath) as f:
+                tsv_reader = csv.DictReader(f, delimiter="\t", fieldnames=column_names)
+                next(tsv_reader)  # skip header row
 
-            for line in tsv_reader:
-                for k, v in line.items():
-                    # TODO: decode judgements as well
-                    if 'goldstandard' in k:
-                        line[k] = unidecode(v)
+                for line in tsv_reader:
+                    for k, v in line.items():
+                        if 'goldstandard' in k:
+                            line[k] = unidecode(v)
+                        elif k == 'judgments':
+                            line[k] = list(map(unidecode, v))
 
-                line_id = np.array([int(line["id"])])
-                line["id"] = line_id
+                    line_id = np.array([int(line["id"])])
+                    line["id"] = line_id
 
-                yield line_id, line
+                    yield line_id, line
