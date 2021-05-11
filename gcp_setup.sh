@@ -19,7 +19,6 @@ cd ..
 
 pip install ./datasets/
 
-cd google-research/wt5
+pip install sacrebleu==1.4.0
 
-PATH=$PATH:~/.local/bin
-PYTHONPATH=$PYTHONPATH:~/indirect-response/google-research/
+tfds build circa/circa
