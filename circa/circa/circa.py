@@ -8,7 +8,6 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 from unidecode import unidecode
 
-np.random.seed(1)
 
 _DESCRIPTION = """
 the circa dataset
@@ -83,38 +82,54 @@ class Circa(tfds.core.GeneratorBasedBuilder):
 
     def _split_generators(self, dl_manager: tfds.download.DownloadManager):
         """Returns SplitGenerators."""
-        # path = dl_manager.download_and_extract(
-        #     "https://raw.githubusercontent.com/google-research-datasets/circa/main/circa-data.tsv"
-        # )
 
-        # # all_splits = {"all_data": self._generate_examples(path)}
-
-        # per_context_splits = {
-        #     f"context_{x}": self._generate_examples_per_context(path, x)
-        #     for x in range(1, 11)
-        # }
-
-        # train_dev_test_indices = self._get_train_dev_test_split(path)
-        # matched_splits = {
-        #     fold: self._generate_examples_matched(path, indices)
-        #     for fold, indices in train_dev_test_indices.items()
-        # }
-
-        # # return {**all_splits, **per_context_splits, **matched_splits}
-        # return {**per_context_splits, **matched_splits}
         files = dl_manager.download_and_extract(
             {"train": [os.path.join(_URL, "circa-data.tsv")]}
         )
 
-        return [
+        split_generators = [
+            tfds.core.SplitGenerator(
+                name=f"context_{x}",
+                gen_kwargs={"files": files["train"], "context_type": x},
+            )
+            for x in range(1, 11)
+        ]
+        split_generators.append(
             tfds.core.SplitGenerator(
                 name=tfds.Split.TRAIN,
-                gen_kwargs={"files": files["train"]},
+                gen_kwargs={"files": files["train"], "context_type": None},
             )
-        ]
+        )
+        return split_generators
 
-    def _generate_examples(self, files):
-        """Yields examples."""
+    def _generate_examples(self, files, context_type=None):
+        """Yields all examples if context_type is None,
+        or examples per context:
+        1. X wants to know about Y's food preferences
+        2. X wants to know what activities Y likes to do during weekends.
+        3. X wants to know what sorts of books Y likes to read.
+        4. Y has just moved into a neighbourhood and meets his/her new neighbour X.
+        5. X and Y are colleagues who are leaving work on a Friday at the same time.
+        6. X wants to know about Y's music preferences.
+        7. Y has just travelled from a different city to meet X.
+        8. X and Y are childhood neighbours who unexpectedly run into each other at a cafe.
+        9. Y has just told X that he/she is thinking of buying a flat in New York.
+        10. Y has just told X that he/she is considering switching his/her job.
+        """
+
+        context_keyword_mapping = {
+            1: "food preference",
+            2: "during weekends",
+            3: "sorts of books",
+            4: "new neighbour",
+            5: "on a Friday",
+            6: "music preferences",
+            7: "different city",
+            8: "childhood neighbours",
+            9: "buying a flat",
+            10: "switching",
+        }
+        context_str = context_keyword_mapping.get(context_type, None)
 
         column_names = [
             "id",
@@ -142,59 +157,5 @@ class Circa(tfds.core.GeneratorBasedBuilder):
                     line_id = np.array([int(line["id"])])
                     line["id"] = line_id
 
-                    yield line_id, line
-
-    def _generate_examples_per_context(self, path, context_type: int):
-        """
-        split examples per scenario:
-        1. X wants to know about Y's food preferences
-        2. X wants to know what activities Y likes to do during weekends.
-        3. X wants to know what sorts of books Y likes to read.
-        4. Y has just moved into a neighbourhood and meets his/her new neighbour X.
-        5. X and Y are colleagues who are leaving work on a Friday at the same time.
-        6. X wants to know about Y's music preferences.
-        7. Y has just travelled from a different city to meet X.
-        8. X and Y are childhood neighbours who unexpectedly run into each other at a cafe.
-        9. Y has just told X that he/she is thinking of buying a flat in New York.
-        10. Y has just told X that he/she is considering switching his/her job.
-        """
-
-        context_keyword_mapping = {
-            1: "food preference",
-            2: "during weekends",
-            3: "sorts of books",
-            4: "new neighbour",
-            5: "on a Friday",
-            6: "music preferences",
-            7: "different city",
-            8: "childhood neighbours",
-            9: "buying a flat",
-            10: "switching",
-        }
-        context_str = context_keyword_mapping[context_type]
-
-        for line_id, line in self._generate_examples(path):
-            if context_str in line["context"]:
-                yield line_id, line
-
-    def _get_train_dev_test_split(self, path, train_frac=0.6, dev_frac=0.2):
-        with open(path) as f:
-            num_entries = len(f.readlines()) - 1  # 34268 entries
-
-        entry_indices = np.arange(num_entries)
-        np.random.shuffle(entry_indices)
-
-        index_train_until = int(num_entries * train_frac) + 1
-        index_dev_until = int(num_entries * (train_frac + dev_frac)) + 1
-
-        return {
-            "train": set(entry_indices[:index_train_until]),
-            "dev": set(entry_indices[index_train_until:index_dev_until]),
-            "test": set(entry_indices[index_dev_until:]),
-        }
-
-    def _generate_examples_matched(self, path, indices):
-
-        for line_id, line in self._generate_examples(path):
-            if int(line_id) in indices:
-                yield line_id, line
+                    if (context_str is None) or (context_str in line["context"]):
+                        yield line_id, line
