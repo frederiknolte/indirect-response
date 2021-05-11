@@ -5,6 +5,7 @@ import csv
 import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
+from unidecode import unidecode
 
 _DESCRIPTION = """
 the circa dataset
@@ -105,6 +106,7 @@ class Circa(tfds.core.GeneratorBasedBuilder):
 
             for line in tsv_reader:
                 for k, v in line.items():
+                    # TODO: decode judgements as well
                     if 'goldstandard' in k:
                         line[k] = unidecode(v)
 
