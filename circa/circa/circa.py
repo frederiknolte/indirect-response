@@ -7,6 +7,8 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 from unidecode import unidecode
 
+np.random.seed(1)
+
 _DESCRIPTION = """
 the circa dataset
 """
@@ -163,7 +165,6 @@ class Circa(tfds.core.GeneratorBasedBuilder):
             num_entries = len(f.readlines()) - 1  # 34268 entries
 
         entry_indices = np.arange(num_entries)
-        np.random.seed(1)
         np.random.shuffle(entry_indices)
 
         index_train_until = int(num_entries * train_frac) + 1
