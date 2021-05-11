@@ -153,3 +153,11 @@ The following are the situational contexts for the dialogs in our data.
 
 If you have any technical questions about our dataset, please contact us at circa@google.com
 
+
+
+
+## integrate with TFDS
+
+2021-05-05
+
+move to the `./circa` directory, and run `tfds build`

@@ -1,0 +1,6 @@
+[submodule "google-research"]
+	path = google-research
+	url = https://github.com/michaeljneely/google-research
+[submodule "datasets"]
+	path = datasets
+	url = https://github.com/michaeljneely/datasets
