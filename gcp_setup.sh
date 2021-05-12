@@ -19,6 +19,4 @@ cd ..
 
 pip install ./datasets/
 
-pip install -r ./requirements.txt
-
-tfds build circa/circa
+cp -r circa/ google-research/wt5/circa

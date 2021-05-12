@@ -79,6 +79,7 @@
     --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
     --module_import="wt5.tasks" \
     --module_import="wt5.mixtures" \
+    --module_import="circa.circa" \
     --gin_location_prefix="wt5/wt5/gin/"
     ```
 
