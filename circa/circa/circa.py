@@ -29,7 +29,7 @@ _CITATION = """
 
 # _URL = "https://raw.githubusercontent.com/google-research-datasets/circa/main/"
 # TODO: change this if/when we publish our data splits
-_URL = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../data")
+_URL = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data")
 
 _SETUPS = ["matched", "unmatched"]
 _SEEDS = [13, 948, 2756]
@@ -98,11 +98,11 @@ class Circa(tfds.core.GeneratorBasedBuilder):
         for seed in _SEEDS:
             for setup in _SETUPS:
                 for split in _SPLITS:
-                    specification = f"{split}_{setup}_{seed}"
+                    specification = f"{split}-{setup}-{seed}"
                     files = dl_manager.download_and_extract(
                         {
                             specification: [
-                                os.path.join(_URL, f"circa-{split}-{setup}-{seed}.tsv")
+                                os.path.join(_URL, f"circa-{specification}.tsv")
                             ]
                         }
                     )
