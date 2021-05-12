@@ -13,6 +13,9 @@ _DESCRIPTION = """
 The Circa (meaning ‘approximately’) dataset aims to help machine learning systems to solve the problem of interpreting indirect answers to polar questions.
 
 The dataset contains pairs of yes/no questions and indirect answers, together with annotations for the interpretation of the answer. The data is collected in 10 different social conversational situations (eg. food preferences of a friend).
+
+This version generates random splits (train/val/test) for both matched/unmatched settings.
+It also repeats the process for three different random seeds.
 """
 
 # TODO(circa): BibTeX citation
@@ -24,7 +27,13 @@ _CITATION = """
   year =        "2020",
 """
 
-_URL = "https://raw.githubusercontent.com/google-research-datasets/circa/main/"
+# _URL = "https://raw.githubusercontent.com/google-research-datasets/circa/main/"
+# TODO: change this if/when we publish our data splits
+_URL = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../data")
+
+_SETUPS = ["matched", "unmatched"]
+_SEEDS = [13, 948, 2756]
+_SPLITS = ["train", "val", "test"]
 
 
 class Circa(tfds.core.GeneratorBasedBuilder):
@@ -85,53 +94,29 @@ class Circa(tfds.core.GeneratorBasedBuilder):
     def _split_generators(self, dl_manager: tfds.download.DownloadManager):
         """Returns SplitGenerators."""
 
-        files = dl_manager.download_and_extract(
-            {"train": [os.path.join(_URL, "circa-data.tsv")]}
-        )
+        split_generators = []
+        for seed in _SEEDS:
+            for setup in _SETUPS:
+                for split in _SPLITS:
+                    specification = f"{split}_{setup}_{seed}"
+                    files = dl_manager.download_and_extract(
+                        {
+                            specification: [
+                                os.path.join(_URL, f"circa-{split}-{setup}-{seed}.tsv")
+                            ]
+                        }
+                    )
+                    split_generators.append(
+                        tfds.core.SplitGenerator(
+                            name=specification,
+                            gen_kwargs={"files": files[specification]},
+                        )
+                    )
 
-        split_generators = [
-            tfds.core.SplitGenerator(
-                name=f"context_{x}",
-                gen_kwargs={"files": files["train"], "context_type": x},
-            )
-            for x in range(1, 11)
-        ]
-        split_generators.append(
-            tfds.core.SplitGenerator(
-                name=tfds.Split.TRAIN,
-                gen_kwargs={"files": files["train"], "context_type": None},
-            )
-        )
         return split_generators
 
-    def _generate_examples(self, files, context_type=None):
-        """Yields all examples if context_type is None,
-        or examples per context:
-        1. X wants to know about Y's food preferences
-        2. X wants to know what activities Y likes to do during weekends.
-        3. X wants to know what sorts of books Y likes to read.
-        4. Y has just moved into a neighbourhood and meets his/her new neighbour X.
-        5. X and Y are colleagues who are leaving work on a Friday at the same time.
-        6. X wants to know about Y's music preferences.
-        7. Y has just travelled from a different city to meet X.
-        8. X and Y are childhood neighbours who unexpectedly run into each other at a cafe.
-        9. Y has just told X that he/she is thinking of buying a flat in New York.
-        10. Y has just told X that he/she is considering switching his/her job.
-        """
-
-        context_keyword_mapping = {
-            1: "food preference",
-            2: "during weekends",
-            3: "sorts of books",
-            4: "new neighbour",
-            5: "on a Friday",
-            6: "music preferences",
-            7: "different city",
-            8: "childhood neighbours",
-            9: "buying a flat",
-            10: "switching",
-        }
-        context_str = context_keyword_mapping.get(context_type, None)
+    def _generate_examples(self, files):
+        """Yields all examples available in the .tsv file"""
 
         column_names = [
             "id",
@@ -159,5 +144,4 @@ class Circa(tfds.core.GeneratorBasedBuilder):
                     line_id = np.array([int(line["id"])])
                     line["id"] = line_id
 
-                    if (context_str is None) or (context_str in line["context"]):
-                        yield line_id, line
+                    yield line_id, line
