@@ -1,5 +1,5 @@
 """
-Generate determinstic splits of the matched and unmatched settings of the Circa dataset for each random seed supplied
+Generate deterministic splits of the matched and unmatched settings of the Circa dataset for each random seed supplied
 """
 import argparse
 import csv
