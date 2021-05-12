@@ -29,6 +29,10 @@ CONTEXT_ID_MAP = {
     "Y has just told X that he/she is considering switching his/her job.": 9
 }
 
+class MockFile:
+    def write(*args):
+        pass
+
 # Static values of dataset
 NUM_CONTEXTS = len(CONTEXT_ID_MAP)
 CIRCA_SIZE = 34268
@@ -78,19 +82,27 @@ if __name__ == "__main__":
 
     assert sum(args.splits) <= 1
     TRAIN_SPLIT, TEST_SPLIT = args.splits
+    NO_VAL_SET = sum(args.splits) == 1.0
 
     ensure_dir(args.out_dir)
 
     # Calculate the size of each fold. The validation set gets any leftovers from rounding.
+
     # Matched setting. Size based on number of instances.
     train_size = math.floor(CIRCA_SIZE * TRAIN_SPLIT)
-    test_size = math.floor(CIRCA_SIZE * TEST_SPLIT)
-    val_size = CIRCA_SIZE - train_size - test_size
+    # Unmatched setting. Size based on number of contexts.
+    train_contexts = math.floor(NUM_CONTEXTS * TRAIN_SPLIT)
 
-    # Unmatched setting. Size based on number of contexes.
-    train_contexes = math.floor(NUM_CONTEXTS * TRAIN_SPLIT)
-    test_contexes = math.floor(NUM_CONTEXTS * TEST_SPLIT)
-    val_contexes = NUM_CONTEXTS - train_contexes - test_contexes
+    if NO_VAL_SET:
+        test_size = CIRCA_SIZE - train_size
+        test_contexts = NUM_CONTEXTS - train_contexts
+        val_size = 0
+        val_contexts = 0
+    else:
+        test_size = math.floor(CIRCA_SIZE * TEST_SPLIT)
+        val_size = CIRCA_SIZE - train_size - test_size
+        test_contexts = math.floor(NUM_CONTEXTS * TEST_SPLIT)
+        val_contexts = NUM_CONTEXTS - train_contexts - test_contexts
 
     # Generate one deterministic dataset split per random seed supplied
     for seed in args.seeds:
@@ -98,15 +110,22 @@ if __name__ == "__main__":
         # Shuffle Context and Instance IDs and split into folds
         random.seed(seed)
         indices = list(range(CIRCA_SIZE))
-        contexes = list(range(NUM_CONTEXTS))
+        contexts = list(range(NUM_CONTEXTS))
         random.shuffle(indices)
-        random.shuffle(contexes)
+        random.shuffle(contexts)
         train_range_idx = indices[:train_size]
-        train_range_context = contexes[:train_contexes]
-        test_range_idx = indices[train_size: train_size + test_size]
-        test_range_context = contexes[train_contexes: train_contexes + test_contexes]
-        val_range_idx = indices[-val_size:]
-        val_range_context = contexes[-val_contexes:]
+        train_range_context = contexts[:train_contexts]
+
+        if NO_VAL_SET:
+            test_range_idx = indices[train_size:]
+            test_range_context = contexts[train_contexts:]
+            val_range_idx = []
+            val_range_context = []
+        else:
+            test_range_idx = indices[train_size: train_size + test_size]
+            test_range_context = contexts[train_contexts: train_contexts + test_contexts]
+            val_range_idx = indices[-val_size:]
+            val_range_context = contexts[-val_contexts:]
 
         # Build maps that assign each instance_id and context to a particular fold
         train_idx_map = {i: "train" for i in train_range_idx}
@@ -122,11 +141,17 @@ if __name__ == "__main__":
         # Parallel file writing
         train_file_matched = open(f"{args.out_dir}/circa-train-matched-{seed}.tsv", "w+")
         test_file_matched = open(f"{args.out_dir}/circa-test-matched-{seed}.tsv", "w+")
-        val_file_matched = open(f"{args.out_dir}/circa-val-matched-{seed}.tsv", "w+")
 
         train_file_unmatched = open(f"{args.out_dir}/circa-train-unmatched-{seed}.tsv", "w+")
         test_file_unmatched = open(f"{args.out_dir}/circa-test-unmatched-{seed}.tsv", "w+")
-        val_file_unmatched = open(f"{args.out_dir}/circa-val-unmatched-{seed}.tsv", "w+")
+
+        # simpler to just mock the write() method than add a bunch of if statements...
+        if NO_VAL_SET:
+            val_file_matched = MockFile()
+            val_file_unmatched = MockFile()
+        else:
+            val_file_matched = open(f"{args.out_dir}/circa-val-matched-{seed}.tsv", "w+")
+            val_file_unmatched = open(f"{args.out_dir}/circa-val-unmatched-{seed}.tsv", "w+")
 
 
         with open(args.in_file) as f:
