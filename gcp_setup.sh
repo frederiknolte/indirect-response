@@ -7,6 +7,8 @@ virtualenv -p python3 .
 
 source ./bin/activate
 
+pip install --upgrade pip
+
 pip install t5[gcp]
 
 cd google-research
@@ -20,3 +22,5 @@ cd ..
 pip install ./datasets/
 
 cp -r circa/ google-research/wt5/circa
+
+pip install -r requirements.txt

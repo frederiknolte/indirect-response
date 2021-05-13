@@ -42,6 +42,7 @@
 
     ```shell
     ./gcp_setup.sh
+    source bin/activate
     cd google-research/wt5
     ```
 
