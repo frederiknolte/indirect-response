@@ -29,7 +29,7 @@ _CITATION = """
 
 # _URL = "https://raw.githubusercontent.com/google-research-datasets/circa/main/"
 # TODO: change this if/when we publish our data splits
-_URL = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
+_URL = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data")
 
 
 class CircaMixin:

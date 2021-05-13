@@ -1,11 +1,11 @@
 """circa_matched13 dataset."""
 
-import tensorflow_datasets as tfds
-
 import os
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
+import tensorflow_datasets as tfds
+
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from circa_helper import CircaMixin
 
 
