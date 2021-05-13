@@ -158,6 +158,11 @@ If you have any technical questions about our dataset, please contact us at circ
 
 ## integrate with TFDS
 
-2021-05-05
+2021-05-13
 
-move to the `./circa` directory, and run `tfds build`
+To build datasets with default splits for both `matched/unmatched` settings and three randome seeds:
+
+```
+cd ./circa_splits
+tfds build circa_matched13 circa_matched948 circa_matched2756 circa_unmatched13 circa_unmatched948 circa_unmatched2756
+```
