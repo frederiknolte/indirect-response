@@ -31,18 +31,16 @@ _CITATION = """
 # TODO: change this if/when we publish our data splits
 _URL = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data")
 
-_SETUPS = ["matched", "unmatched"]
-_SEEDS = [13, 948, 2756]
-_SPLITS = ["train", "val", "test"]
 
-
-class Circa(tfds.core.GeneratorBasedBuilder):
-    """DatasetBuilder for circa dataset."""
+class CircaMixin:
+    """helper class"""
 
     VERSION = tfds.core.Version("1.0.0")
     RELEASE_NOTES = {
         "1.0.0": "Initial release.",
     }
+    _SETUP = None
+    _SEED = None
 
     def _info(self) -> tfds.core.DatasetInfo:
         """Returns the dataset metadata."""
@@ -94,24 +92,25 @@ class Circa(tfds.core.GeneratorBasedBuilder):
     def _split_generators(self, dl_manager: tfds.download.DownloadManager):
         """Returns SplitGenerators."""
 
+        splits = ["train", "val", "test"]
+        tfds_names = [tfds.Split.TRAIN, tfds.Split.VALIDATION, tfds.Split.TEST]
+
         split_generators = []
-        for seed in _SEEDS:
-            for setup in _SETUPS:
-                for split in _SPLITS:
-                    specification = f"{split}-{setup}-{seed}"
-                    files = dl_manager.download_and_extract(
-                        {
-                            specification: [
-                                os.path.join(_URL, f"circa-{specification}.tsv")
-                            ]
-                        }
-                    )
-                    split_generators.append(
-                        tfds.core.SplitGenerator(
-                            name=specification,
-                            gen_kwargs={"files": files[specification]},
+        for split, tfds_name in zip(splits, tfds_names):
+            files = dl_manager.download_and_extract(
+                {
+                    split: [
+                        os.path.join(
+                            _URL, f"circa-{split}-{self._SETUP}-{self._SEED}.tsv"
                         )
-                    )
+                    ]
+                }
+            )
+            split_generators.append(
+                tfds.core.SplitGenerator(
+                    name=tfds_name, gen_kwargs={"files": files[split]}
+                )
+            )
 
         return split_generators
 
