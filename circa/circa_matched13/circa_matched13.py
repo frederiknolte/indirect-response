@@ -7,7 +7,7 @@ sys.path.append('..')
 from circa_helper import _Circa
 
 
-class CircaUnmatched13(_Circa,tfds.core.GeneratorBasedBuilder):
+class CircaMatched13(_Circa,tfds.core.GeneratorBasedBuilder):
   """DatasetBuilder for circa_matched_13 dataset."""
 
   VERSION = tfds.core.Version('1.0.0')
