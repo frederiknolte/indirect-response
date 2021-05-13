@@ -6,10 +6,10 @@ import os
 import sys
 
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
-from circa_helper import _Circa
+from circa_helper import CircaMixin
 
 
-class CircaMatched13(_Circa, tfds.core.GeneratorBasedBuilder):
+class CircaMatched13(CircaMixin, tfds.core.GeneratorBasedBuilder):
     """DatasetBuilder for circa_matched_13 dataset."""
 
     VERSION = tfds.core.Version("1.0.0")

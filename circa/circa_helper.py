@@ -32,9 +32,8 @@ _CITATION = """
 _URL = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
 
 
-class _Circa:
-    '''helper class'''
-    """DatasetBuilder for circa dataset."""
+class CircaMixin:
+    """helper class"""
 
     VERSION = tfds.core.Version("1.0.0")
     RELEASE_NOTES = {
