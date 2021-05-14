@@ -78,10 +78,10 @@
     export SEQ_LENGTH_FILE="wt5/gin/sequence_lengths/cos_e_v001.gin"
     ```
 
-12. Execute your mixture task to finetune the model.
+12. Execute your mixture task to finetune the model. Ensure the parent directory (`google-research`) is included in the `PYTHONPATH`:
 
     ```shell
-    t5_mesh_transformer \
+    PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_transformer \
     --tpu="${TPU}" \
     --gcp_project="${PROJECT}" \
     --tpu_zone="${ZONE}" \
@@ -110,7 +110,7 @@
 13. Run your evaluation task
 
     ```shell
-    t5_mesh_transformer \
+    PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_transformer \
     --tpu="${TPU}" \
     --gcp_project="${PROJECT}" \
     --tpu_zone="${ZONE}" \
