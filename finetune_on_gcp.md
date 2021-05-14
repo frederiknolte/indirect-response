@@ -75,7 +75,7 @@
 11. Pick the `.gin` sequence length file for whichever dataset in your mixture has the largest sequences. This file controls the padding. You wouldn't want your sequences getting cut off! If you're using the `esnli` dataset, it's probably the longest.
 
     ```shell
-    export SEQ_LENGTH_FILE="wt5/gin/sequence_lengths/cos_e_v001.gin"
+    export SEQ_LENGTH_FILE="wt5/gin/sequence_lengths/esnli_v002.gin"
     ```
 
 12. Execute your mixture task to finetune the model. Ensure the parent directory (`google-research`) is included in the `PYTHONPATH`:
