@@ -98,8 +98,8 @@
     --gin_param="utils.run.init_checkpoint='${PRETRAINED_DIR}/model.ckpt-${PRETRAINED_STEPS}'" \
     --gin_param="utils.run.learning_rate_schedule=@learning_rate_schedules.constant_learning_rate" \
     --gin_param="constant_learning_rate.learning_rate=1e-3" \
-    --train_gin_param="mesh_train_dataset_fn.seed=${RANDOM_SEED}" \
-    --train_gin_param="utils.run.skip_seen_data = True" \
+    --gin_param="mesh_train_dataset_fn.seed=${RANDOM_SEED}" \
+    --gin_param="utils.run.skip_seen_data = True" \
     --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
     --module_import="wt5.tasks" \
     --module_import="wt5.mixtures" \
