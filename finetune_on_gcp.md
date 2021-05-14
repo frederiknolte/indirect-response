@@ -125,6 +125,8 @@
     --gin_param="utils.run.dataset_split = 'validation'" \
     --gin_param="utils.run.batch_size=('tokens_per_batch', 65536)" \
     --gin_param="utils.run.eval_checkpoint_step='all'" \
+    --gin_param="mesh_eval_dataset_fn.seed=${RANDOM_SEED}" \
+    --gin_param="utils.run.skip_seen_data = True" \
     --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
     --module_import="wt5.tasks" \
     --module_import="wt5.mixtures" \
