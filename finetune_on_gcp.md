@@ -2,31 +2,31 @@
 
 1. Open a cloud shell
 
-2. Set some environment variables. If you're using the TPU Research Cloud credit, you probably won't have access to any beefier setup than `v3-8` TPUs. Note: **be sure to make a bucket first.**
-
-    ```shell
-    export PROJECT=your-google-cloud-project-name
-    export ZONE=whatever-zone-you-get-free-tpus-in
-    export BUCKET=gs://your-bucket
-    export TPU=what-you-want-to-name-your-tpu
-    export TOPOLOGY="v3-8"
-    ```
-
-3. Create a tpu cluster (from my experiments, n2-standard-2 has enough memory & storage but you might need more)
+2. Create a tpu cluster (from my experiments, n2-standard-2 has enough memory & storage but you might need more). If you're using the TPU Research Cloud credit, you probably won't have access to any beefier setup than `v3-8` TPUs.
 
     ```shell
     gcloud compute tpus execution-groups create \
-    --name="${TPU}" \
-    --zone="${ZONE}" \
+    --name=what-you-want-to-name-your-tpu \
+    --zone=whatever-zone-you-get-free-tpus-in \
     --tf-version=2.4.1 \
     --machine-type=n2-standard-2 \
-    --accelerator-type="${TOPOLOGY}"
+    --accelerator-type="v3-8"
     ```
 
-4. It should automatically connect to your TPU. If not:
+3. It should automatically connect to your TPU. If not:
 
     ```shell
-    gcloud compute ssh $TPU --zone $ZONE
+    gcloud compute ssh whatever-you-named-your-tpu --zone whatever-zone-you-chose
+    ```
+
+4. Set some environment variables. Note: **be sure to make a bucket first.**
+
+    ```shell
+    export PROJECT=your-google-cloud-project-name
+    export ZONE=whatever-zone-you-chose
+    export BUCKET=gs://your-bucket
+    export TPU=whatever-you-named-your-tpu
+    export TOPOLOGY="v3-8"
     ```
 
 5. Download the Indirect Response code
