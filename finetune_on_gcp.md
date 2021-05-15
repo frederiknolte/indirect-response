@@ -26,7 +26,7 @@
     export ZONE=whatever-zone-you-chose
     export BUCKET=gs://your-bucket
     export TPU=whatever-you-named-your-tpu
-    export TOPOLOGY="v3-8"
+    export TOPOLOGY=v3-8
     ```
 
 5. Download the Indirect Response code
@@ -75,7 +75,7 @@
 11. Pick the `.gin` sequence length file for whichever dataset in your mixture has the largest sequences. This file controls the padding. You wouldn't want your sequences getting cut off! If you're using the `esnli` dataset, it's probably the longest.
 
     ```shell
-    export SEQ_LENGTH_FILE="wt5/gin/sequence_lengths/esnli_v002.gin"
+    export SEQ_LENGTH_FILE=wt5/gin/sequence_lengths/esnli_v002.gin
     ```
 
 12. Execute your mixture task to finetune the model. Ensure the parent directory (`google-research`) is included in the `PYTHONPATH`:
@@ -99,7 +99,6 @@
     --gin_param="utils.run.learning_rate_schedule=@learning_rate_schedules.constant_learning_rate" \
     --gin_param="constant_learning_rate.learning_rate=1e-3" \
     --gin_param="mesh_train_dataset_fn.seed=${RANDOM_SEED}" \
-    --gin_param="utils.run.skip_seen_data = True" \
     --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
     --module_import="wt5.tasks" \
     --module_import="wt5.mixtures" \
@@ -126,7 +125,6 @@
     --gin_param="utils.run.batch_size=('tokens_per_batch', 65536)" \
     --gin_param="utils.run.eval_checkpoint_step='all'" \
     --gin_param="mesh_eval_dataset_fn.seed=${RANDOM_SEED}" \
-    --gin_param="utils.run.skip_seen_data = True" \
     --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
     --module_import="wt5.tasks" \
     --module_import="wt5.mixtures" \
