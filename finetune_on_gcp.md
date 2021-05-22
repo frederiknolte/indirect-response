@@ -72,13 +72,19 @@
     export RANDOM_SEED=13
     ```
 
-11. Pick the `.gin` sequence length file for whichever dataset in your mixture has the largest sequences. This file controls the padding. You wouldn't want your sequences getting cut off! If you're using the `esnli` dataset, it's probably the longest.
+11. Select the Circa dataset type you would like to use (`matched` or `unmatched`):
+
+    ```shell
+    export CIRCA_TYPE=matched
+    ```
+
+12. Pick the `.gin` sequence length file for whichever dataset in your mixture has the largest sequences. This file controls the padding. You wouldn't want your sequences getting cut off! If you're using the `esnli` dataset, it's probably the longest.
 
     ```shell
     export SEQ_LENGTH_FILE=wt5/gin/sequence_lengths/esnli_v002.gin
     ```
 
-12. Execute your mixture task to finetune the model. Ensure the parent directory (`google-research`) is included in the `PYTHONPATH`:
+13. Execute your mixture task to finetune the model. Ensure the parent directory (`google-research`) is included in the `PYTHONPATH`:
 
     ```shell
     PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_transformer \
@@ -102,11 +108,11 @@
     --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
     --module_import="wt5.tasks" \
     --module_import="wt5.mixtures" \
-    --module_import="circa.circa_splits.circa_matched${RANDOM_SEED}" \
+    --module_import="circa.circa_splits.circa_${CIRCA_TYPE}${RANDOM_SEED}" \
     --gin_location_prefix="wt5/wt5/gin/"
     ```
 
-13. Run your evaluation task
+14. Run your evaluation task
 
     ```shell
     PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_transformer \
@@ -128,13 +134,46 @@
     --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
     --module_import="wt5.tasks" \
     --module_import="wt5.mixtures" \
-    --module_import="circa.circa_splits.circa_matched${RANDOM_SEED}" \
+    --module_import="circa.circa_splits.circa_${CIRCA_TYPE}${RANDOM_SEED}" \
     --gin_location_prefix="wt5/wt5/gin/" \
     --gin_param="utils.run.eval_summary_dir='${MODEL_DIR}/validation_eval'"
     ```
 
-14. Run the final evaluation on the Circa test set
+15. Examine the validation performance to pick your best checkpoint
 
     ```shell
-    TBD
+    export BEST_VAL_CHECKPOINT=...
+    ```
+
+16. Set the task you will use for final evaluation
+
+    ```shell
+    export FINAL_EVAL_TASK="circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"
+    ```
+
+17. Run the final evaluation on the Circa test set
+
+    ```shell
+    PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_transformer \
+    --tpu="${TPU}" \
+    --gcp_project="${PROJECT}" \
+    --tpu_zone="${ZONE}" \
+    --model_dir="${MODEL_DIR}" \
+    --gin_file="dataset.gin" \
+    --gin_file="${MODEL_DIR}/operative_config.gin" \
+    --gin_file="${SEQ_LENGTH_FILE}" \
+    --gin_file="eval.gin" \
+    --gin_param="utils.tpu_mesh_shape.tpu_topology = '${TOPOLOGY}'" \
+    --gin_param="MIXTURE_NAME = '${FINAL_EVAL_TASK}'" \
+    --gin_param="mesh_eval_dataset_fn.use_cached=False" \
+    --gin_param="utils.run.dataset_split = 'test'" \
+    --gin_param="utils.run.batch_size=('tokens_per_batch', 65536)" \
+    --gin_param="utils.run.eval_checkpoint_step=${BEST_VAL_CHECKPOINT}" \
+    --gin_param="mesh_eval_dataset_fn.seed=${RANDOM_SEED}" \
+    --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
+    --module_import="wt5.tasks" \
+    --module_import="wt5.mixtures" \
+    --module_import="circa.circa_splits.circa_${CIRCA_TYPE}${RANDOM_SEED}" \
+    --gin_location_prefix="wt5/wt5/gin/" \
+    --gin_param="utils.run.eval_summary_dir='${MODEL_DIR}/test_eval'"
     ```
