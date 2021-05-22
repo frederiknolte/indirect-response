@@ -46,8 +46,9 @@ def gen_mturk_explain_nli(
     inputs_file: os.PathLike,
     targets_file: os.PathLike,
     predictions_file: os.PathLike,
-    strict: bool = True,
-    num_questions: int = 20,
+    num_samples_correct: int = 20,
+    num_samples_incorrect: int = 20,
+    strict: bool = False,
     tsv_file: os.PathLike = CIRCA,
     seed: int = 7,
 ) -> pd.DataFrame:
@@ -100,6 +101,14 @@ def gen_mturk_explain_nli(
     df["explanation"] = df.predictions.apply(lambda x: x["explanations"][0])
     df["prediction"] = df.predictions.apply(
         lambda x: NLI_MAPPING.get(x["label"], "None")
+    )
+
+    # select examples based on whether prediction is correct
+    df = pd.concat(
+        [
+            df[df.prediction == df.target].sample(num_samples_correct),
+            df[df.prediction != df.target].sample(num_samples_incorrect),
+        ]
     )
 
     # coalesce target and prediction
