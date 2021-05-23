@@ -177,3 +177,33 @@
     --gin_location_prefix="wt5/wt5/gin/" \
     --gin_param="utils.run.eval_summary_dir='${MODEL_DIR}/test_eval'"
     ```
+
+18. To generate predictions from the Circa train set
+
+    ```shell
+    export TRAIN_EVAL_TASK="circa_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"
+
+    PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_transformer \
+        --tpu="${TPU}" \
+        --gcp_project="${PROJECT}" \
+        --tpu_zone="${ZONE}" \
+        --model_dir="${MODEL_DIR}" \
+        --gin_file="dataset.gin" \
+        --gin_file="${MODEL_DIR}/operative_config.gin" \
+        --gin_file="${SEQ_LENGTH_FILE}" \
+        --gin_file="eval.gin" \
+        --gin_param="utils.tpu_mesh_shape.tpu_topology = '${TOPOLOGY}'" \
+        --gin_param="MIXTURE_NAME = '${TRAIN_EVAL_TASK}'" \
+        --gin_param="mesh_eval_dataset_fn.use_cached=False" \
+        --gin_param="utils.run.dataset_split = 'train'" \
+        --gin_param="utils.run.batch_size=('tokens_per_batch', 65536)" \
+        --gin_param="utils.run.eval_checkpoint_step=${BEST_VAL_CHECKPOINT}" \
+        --gin_param="mesh_eval_dataset_fn.seed=${RANDOM_SEED}" \
+        --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
+        --module_import="wt5.tasks" \
+        --module_import="wt5.mixtures" \
+        --module_import="circa.circa_splits.circa_${CIRCA_TYPE}${RANDOM_SEED}" \
+        --gin_location_prefix="wt5/wt5/gin/" \
+        --gin_param="utils.run.eval_summary_dir='${MODEL_DIR}/train_eval'"
+
+    ```
