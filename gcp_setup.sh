@@ -21,6 +21,8 @@ cd ..
 
 pip install ./datasets/
 
+pip install -r LAS/requirements.txt
+
 cp -r circa/ google-research/wt5/circa
 
 pip install -r requirements.txt

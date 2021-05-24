@@ -4,3 +4,6 @@
 [submodule "datasets"]
 	path = datasets
 	url = https://github.com/michaeljneely/datasets
+[submodule "LAS"]
+	path = LAS
+	url = https://github.com/frederiknolte/LAS-NL-Explanations.git
