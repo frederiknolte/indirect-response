@@ -87,9 +87,18 @@
 
 ## Running Experiments
 
-The following commands hold for all experiments. You just need to set the appropriate environment variables first. All available mixtures are listed and explained [in this README](mixtures.md).
+The following commands hold for all experiments. You just need to set the appropriate environment variables first. We describe the procedure below. The variables we used to run our experiments are available [in the next section](#reproducing-our-experiments).
 
 ### Training
+
+First set the task or mixture from the WT5 registry as well as the directory in your bucket where you would like to save generated outputs:
+
+```shell
+    export TASK=...(e..g, "esnli_and_cos_e_to_circa_nli_${CIRCA_TYPE}${RANDOM_SEED}")
+    export MODEL_DIR="${BUCKET}/${TASK}"
+```
+
+Then you can start training. The `t5_mesh` script can recover from the last checkpoint if training is disrupted for any reason. Simply re-run the command.
 
 ```shell
 PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_transformer \
@@ -122,42 +131,48 @@ PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_tr
 To validate the model you need to set the `VAL_TASK` variable. The value depends on what you want to validate. For example, if you want to validate every task in your training mixture, you can set `VAL_TASK` to the same value as `TASK`.
 
 ```shell
-PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_transformer \
-    --tpu="${TPU}" \
-    --gcp_project="${PROJECT}" \
-    --tpu_zone="${ZONE}" \
-    --model_dir="${MODEL_DIR}" \
-    --gin_file="dataset.gin" \
-    --gin_file="${MODEL_DIR}/operative_config.gin" \
-    --gin_file="${SEQ_LENGTH_FILE}" \
-    --gin_file="eval.gin" \
-    --gin_param="utils.tpu_mesh_shape.tpu_topology = '${TOPOLOGY}'" \
-    --gin_param="MIXTURE_NAME = '${VAL_TASK}'" \
-    --gin_param="mesh_eval_dataset_fn.use_cached=False" \
-    --gin_param="utils.run.dataset_split = 'validation'" \
-    --gin_param="utils.run.batch_size=('tokens_per_batch', 65536)" \
-    --gin_param="utils.run.eval_checkpoint_step='all'" \
-    --gin_param="mesh_eval_dataset_fn.seed=${RANDOM_SEED}" \
-    --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
-    --module_import="wt5.tasks" \
-    --module_import="wt5.mixtures" \
-    --module_import="circa.circa_splits.circa_${CIRCA_TYPE}${RANDOM_SEED}" \
-    --gin_location_prefix="wt5/wt5/gin/" \
-    --gin_param="utils.run.eval_summary_dir='${MODEL_DIR}/validation_eval'"
+    export EVAL_TASK=...(e.g., "circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}")
+```
+
+Then you can start validating your model:
+
+```shell
+    PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_transformer \
+        --tpu="${TPU}" \
+        --gcp_project="${PROJECT}" \
+        --tpu_zone="${ZONE}" \
+        --model_dir="${MODEL_DIR}" \
+        --gin_file="dataset.gin" \
+        --gin_file="${MODEL_DIR}/operative_config.gin" \
+        --gin_file="${SEQ_LENGTH_FILE}" \
+        --gin_file="eval.gin" \
+        --gin_param="utils.tpu_mesh_shape.tpu_topology = '${TOPOLOGY}'" \
+        --gin_param="MIXTURE_NAME = '${VAL_TASK}'" \
+        --gin_param="mesh_eval_dataset_fn.use_cached=False" \
+        --gin_param="utils.run.dataset_split = 'validation'" \
+        --gin_param="utils.run.batch_size=('tokens_per_batch', 65536)" \
+        --gin_param="utils.run.eval_checkpoint_step='all'" \
+        --gin_param="mesh_eval_dataset_fn.seed=${RANDOM_SEED}" \
+        --t5_tfds_data_dir="${BUCKET}/t5-tfds" \
+        --module_import="wt5.tasks" \
+        --module_import="wt5.mixtures" \
+        --module_import="circa.circa_splits.circa_${CIRCA_TYPE}${RANDOM_SEED}" \
+        --gin_location_prefix="wt5/wt5/gin/" \
+        --gin_param="utils.run.eval_summary_dir='${MODEL_DIR}/validation_eval'"
 ```
 
 ### Test Set Evaluation
 
-Once you've run the validation task, it's up to you to find the best checkpoint for the final test set evaluation. Set that variable first:
+Once you've run the validation task, it's up to you to find the best checkpoint for the final test set evaluation. For example, we used Tensorboard to monitor the accuracy during the validation process. Once you know the step number of your checkpoint, set that variable first:
 
 ```shell
-    export BEST_VAL_CHECKPOINT=...
+    export BEST_VAL_CHECKPOINT=...(e.g., 1020700)
 ```
 
-Then set the name of the task/mixture you would like to use:
+Then set the name of the task/mixture you would like to use.
 
 ```shell
-    export FINAL_EVAL_TASK=...
+    export FINAL_EVAL_TASK=... (e.g., "circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}")
 ```
 
 Finally, run the evaluation:
@@ -187,125 +202,28 @@ Finally, run the evaluation:
     --gin_param="utils.run.eval_summary_dir='${MODEL_DIR}/test_eval'"
 ```
 
-## Running the Baselines
+## Cleanup
 
-Here we list the variables we set to run the baseline experiments. Refer to the previous section to see how to train, validate, and evaluate on the appropriate test set.
+All your artifacts (checkpoints, inputs, predictions, targets, etc...) should now be available in the `MODEL_DIR` folder in your bucket. To exit and delete your TPU node simply `exit` tmux and then `exit` the TPU node. Then run:
 
-### Circa Baselines
+```shell
+    gcloud compute tpus execution-groups delete whatever_your_tpu_name_is --zone=whatever_your_zone_is
+```
 
-This involves finetuning the pretrained T5 model to generate the correct NLI labels for the Circa dataset (without explaining them), thus setting the benchmark for accuracy.
+To verify no more TPU nodes are active, run:
 
-1. Variables necessary to train:
+```shell
+    gcloud compute tpus execution-groups list --zone=whatever_your_zone_is
+```
 
-    ```shell
-        export TASK="circa_v100_0_expln_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"
-        export MODEL_DIR="${BUCKET}/${TASK}"
-    ```
+## Reproducing our Experiments
 
-2. Variables necessary to validate:
+Consult the following table to see the environment variables we set for our experiments.
 
-    ```shell
-        export EVAL_TASK="${TASK}"
-    ```
-
-3. Then set your best checkpoint and evaluate on the test set:
-
-    ```shell
-        export BEST_VAL_CHECKPOINT=...
-        export FINAL_EVAL_TASK="${TASK}"
-    ```
-
-### Circa Baselines - Premise Only
-
-This involves finetuning the pretrained T5 model to generate the correct NLI labels for the Circa dataset (without explaining them) without access to the hypothesis, thus setting the benchmark for accuracy in this ablated setting.
-
-1. Variables necessary to train:
-
-    ```shell
-        export TASK="circa_nli_baseline_premise_only_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"
-        export MODEL_DIR="${BUCKET}/${TASK}"
-    ```
-
-2. Variables necessary to validate:
-
-    ```shell
-        export EVAL_TASK="${TASK}"
-    ```
-
-3. Then set your best checkpoint and evaluate on the test set:
-
-    ```shell
-        export BEST_VAL_CHECKPOINT=...
-        export FINAL_EVAL_TASK="${TASK}"
-    ```
-
-### Circa Baselines - Hypothesis Only
-
-This involves finetuning the pretrained T5 model to generate the correct NLI labels for the Circa dataset (without explaining them) without access to the premise, thus setting the benchmark for accuracy in this ablated setting.
-
-1. Variables necessary to train:
-
-    ```shell
-        export TASK="circa_nli_baseline_hypothesis_only_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"
-        export MODEL_DIR="${BUCKET}/${TASK}"
-    ```
-
-2. Variables necessary to validate:
-
-    ```shell
-        export EVAL_TASK="${TASK}"
-    ```
-
-3. Then set your best checkpoint and evaluate on the test set:
-
-    ```shell
-        export BEST_VAL_CHECKPOINT=...
-        export FINAL_EVAL_TASK="${TASK}"
-    ```
-
-### Zero Shot Transfer to Circa from E-SNLI and Cos-E
-
-This involves finetuning the pretrained T5 model on a mixture of E-SNLI and Cos-E data and then performing zero shot evaluation (predictions with explanations) on the Circa Dataset.
-
-1. Variables necessary to train:
-
-    ```shell
-        export TASK="esnli_and_cos_e_to_circa_zero_shot"
-        export MODEL_DIR="${BUCKET}/${TASK}"
-    ```
-
-2. Variables necessary to validate:
-
-    ```shell
-        export EVAL_TASK="circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"
-    ```
-
-3. Then set your best checkpoint and evaluate on the test set:
-
-    ```shell
-        export BEST_VAL_CHECKPOINT=...
-        export FINAL_EVAL_TASK="${EVAL_TASK}"
-    ```
-
-## Running the Finetuning Experiments
-
-This involves finetuning the pretrained T5 model on a mixture of E-SNLI and Cos-E data and Circa data (without generating explanations) and then evaluating the model's capability to generate predictions **and** explanations for the Circa dataset.
-
-1. Variables necessary to train:
-
-    ```shell
-        export TASK="esnli_and_cos_e_to_circa_nli_${CIRCA_TYPE}${RANDOM_SEED}"
-        export MODEL_DIR="${BUCKET}/${TASK}"
-    ```
-
-2. Variables necessary to validate:
-
-    ```shell
-        export EVAL_TASK="circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"
-    ```
-
-3. Then set your best checkpoint and evaluate on the test set:
-
-    ```shell
-        export BEST_VAL_CHECKPOINT=...
-        export FINAL_EVAL_TASK="${EVAL_TASK}"
+| Experiment | `TASK` | `EVAL_TASK` | `FINAL_EVAL_TASK` |
+| ---------- | ------ | ----------- | ----------------- |
+| Circa baseline | `TASK=circa_v100_0_expln_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}` | `EVAL_TASK="${TASK}` | `FINAL_EVAL_TASK="${TASK}"` |
+|Circa baseline - premise only | `TASK="circa_nli_baseline_premise_only_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `EVAL_TASK="${TASK}` | `FINAL_EVAL_TASK="${TASK}"` |
+|Circa baseline - hypothesis only | `TASK="circa_nli_baseline_hypothesis_only_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `EVAL_TASK="${TASK}` | `FINAL_EVAL_TASK="${TASK}"` |
+| Zero Shot - e-SNLI and Cos-E to Circa | `TASK="esnli_and_cos_e_to_circa_zero_shot"` | `EVAL_TASK="circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `FINAL_EVAL_TASK="${EVAL_TASK}"` |
+| Full mixture (the main experiments) | `TASK="esnli_and_cos_e_to_circa_nli_${CIRCA_TYPE}${RANDOM_SEED}"` | `EVAL_TASK="circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `FINAL_EVAL_TASK="${EVAL_TASK}"`
