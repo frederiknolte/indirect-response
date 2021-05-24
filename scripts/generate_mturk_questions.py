@@ -140,6 +140,7 @@ def gen_mturk_explain_nli_relaxed(
     num_samples_per_category: int = 10,
     tsv_file: os.PathLike = CIRCA,
     seed: int = 7,
+    exclude_samples=None,
 ) -> pd.DataFrame:
     """sample explanations from circa+LAS test data, from 4 categories:
     - prediction correct/incorrect
@@ -192,6 +193,14 @@ def gen_mturk_explain_nli_relaxed(
         inplace=True,
     )
 
+    if exclude_samples:
+        df_exclude = pd.read_csv(exclude_samples).rename(
+            columns={"question": "question-X", "answer": "premise"}
+        )
+        df_exclude["exclude"] = True
+        df = df.merge(df_exclude, on=["context", "question-X", "premise", 'explanation'], how="left")
+        df = df[df.exclude.isna()]
+
     df["correct_pred"] = df.target == df.prediction
     print(df.groupby(["correct_pred", "leaked"]).apply(lambda _df: _df.shape[0]))
     df = (
@@ -217,8 +226,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_csv", help="input csv file from LAS")
     parser.add_argument("--output_csv", help="output csv file for MTurk")
+    parser.add_argument("--num_sample", type=int, help="number of samples per category")
     parser.add_argument(
-        "--num_sample",type=int, help="number of samples per category"
+        "--exclude_samples", help="csv file containing samples to exclude"
     )
     args = parser.parse_args()
 
@@ -226,7 +236,9 @@ if __name__ == "__main__":
     # df.to_csv("input_explanation_original.csv", index=False)
     # df_mturk.to_csv("input_explanation.csv", index=False)
     df, df_mturk = gen_mturk_explain_nli_relaxed(
-        args.input_csv, num_samples_per_category=args.num_sample
+        args.input_csv,
+        num_samples_per_category=args.num_sample,
+        exclude_samples=args.exclude_samples,
     )
     df.to_csv("original" + args.output_csv, index=False)
     df_mturk.to_csv(args.output_csv, index=False)
