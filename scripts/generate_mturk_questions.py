@@ -164,7 +164,9 @@ def gen_mturk_explain_nli_relaxed(
     df = pd.read_csv(las_file, sep=",", quoting=csv.QUOTE_NONE, escapechar="\\")
     df = df[["hypothesis", "premise", "target", "prediction", "explanation", "leaked"]]
     # a hack: the unmatched case has some parts of the context in "hypothesis" as well
-    df['hypothesis'] = df["hypothesis"].apply(lambda x: str(x).split(" hypothesis: ")[-1])
+    df["hypothesis"] = df["hypothesis"].apply(
+        lambda x: str(x).split(" hypothesis: ")[-1]
+    )
     df["target"] = df.target.apply(lambda x: NLI_MAP.get(LABEL_MAP[x], None))
     df["prediction"] = df.prediction.apply(lambda x: NLI_MAP.get(LABEL_MAP[x], None))
     df = df[~(df.target.isna() | df.prediction.isna())]
@@ -194,7 +196,7 @@ def gen_mturk_explain_nli_relaxed(
     print(df.groupby(["correct_pred", "leaked"]).apply(lambda _df: _df.shape[0]))
     df = (
         df.groupby(["correct_pred", "leaked"])
-        .apply(lambda _df: _df.sample(10))
+        .apply(lambda _df: _df.sample(num_samples_per_category))
         .reset_index(drop=True)
     ).rename(columns={"question-X": "question", "premise": "answer"})
 
@@ -215,12 +217,16 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_csv", help="input csv file from LAS")
     parser.add_argument("--output_csv", help="output csv file for MTurk")
-    parser.add_argument('--num_sample', default=10, help='number of samples per category')
+    parser.add_argument(
+        "--num_sample",type=int, default=10, help="number of samples per category"
+    )
     args = parser.parse_args()
 
     # df, df_mturk = gen_mturk_explain_nli_relaxed("matched_data/circa/NLI/test.csv")
     # df.to_csv("input_explanation_original.csv", index=False)
     # df_mturk.to_csv("input_explanation.csv", index=False)
-    df, df_mturk = gen_mturk_explain_nli_relaxed(args.input_csv, args.num_sample)
+    df, df_mturk = gen_mturk_explain_nli_relaxed(
+        args.input_csv, num_samples_per_category=args.num_sample
+    )
     df.to_csv("original" + args.output_csv, index=False)
     df_mturk.to_csv(args.output_csv, index=False)
