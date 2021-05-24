@@ -21,27 +21,6 @@ def read_circa(tsv_file: os.PathLike = CIRCA) -> pd.DataFrame:
     return df
 
 
-def calc_bleu_scores(tsv_file=CIRCA):
-    df = read_circa(tsv_file)
-
-    bleu = sacrebleu.corpus_bleu(
-        df["answer-Y"].tolist(), [df["canquestion-X"].tolist()]
-    )
-    bleu_gs1 = df.groupby("goldstandard1").apply(
-        lambda _df: sacrebleu.corpus_bleu(
-            _df["answer-Y"].tolist(), [_df["canquestion-X"].tolist()]
-        )
-    )
-    bleu_gs2 = df.groupby("goldstandard2").apply(
-        lambda _df: sacrebleu.corpus_bleu(
-            _df["answer-Y"].tolist(), [_df["canquestion-X"].tolist()]
-        )
-    )
-
-    print("bleu:", bleu, "per goldstandard1:", bleu_gs1, "per goldstandard2:", bleu_gs2)
-    return bleu, bleu_gs1, bleu_gs2
-
-
 def gen_mturk_explain_nli(
     inputs_file: os.PathLike,
     targets_file: os.PathLike,
@@ -124,7 +103,6 @@ def gen_mturk_explain_nli(
 
 if __name__ == "__main__":
     # df = read_circa()
-    # calc_bleu_scores()
 
     df = gen_mturk_explain_nli("circa_inputs", "circa_targets", "circa_predictions")
     df.to_csv("input_explanation.csv", index=False)
