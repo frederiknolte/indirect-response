@@ -218,7 +218,7 @@ if __name__ == "__main__":
     parser.add_argument("--input_csv", help="input csv file from LAS")
     parser.add_argument("--output_csv", help="output csv file for MTurk")
     parser.add_argument(
-        "--num_sample",type=int, default=10, help="number of samples per category"
+        "--num_sample",type=int, help="number of samples per category"
     )
     args = parser.parse_args()
 
