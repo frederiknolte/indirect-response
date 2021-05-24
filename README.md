@@ -151,7 +151,7 @@ We then select the model checkpoint with the highest accuracy on the Circa datas
 
 ### Leakage-Adjusted Simulatibility
 
-To train simulators and calculate LAS scores, please follow the instructions detailed in [run_LAS.md](run_LAS.md).
+To train simulators and calculate LAS scores, please follow the instructions detailed in [run_LAS.md](running_LAS.md).
 
 For each seed and each setting (**matched** and **unmatched**), we take the finetuned T5 model checkpoint with the highest Circa validation accuracy. We then generate rationales on the training and validation sets as well, so we have rationales for every instance from the Circa dataset.
 
