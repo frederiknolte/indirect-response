@@ -247,6 +247,16 @@ def gen_mturk_explain_nli(
 
 
 if __name__ == "__main__":
-    df, df_mturk = gen_mturk_explain_nli_relaxed("matched_data/circa/NLI/test.csv")
-    df.to_csv("input_explanation_original.csv", index=False)
-    df_mturk.to_csv('input_explanation.csv', index=False)
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input_csv', help='input csv file from LAS')
+    parser.add_argument('--output_csv', help='output csv file for MTurk')
+    args = parser.parse_args()
+
+    # df, df_mturk = gen_mturk_explain_nli_relaxed("matched_data/circa/NLI/test.csv")
+    # df.to_csv("input_explanation_original.csv", index=False)
+    # df_mturk.to_csv("input_explanation.csv", index=False)
+    df, df_mturk = gen_mturk_explain_nli_relaxed(args.input_csv)
+    df.to_csv('original' + args.output_csv, index=False)
+    df_mturk.to_csv(args.output_csv, index=False)
