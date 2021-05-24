@@ -1,3 +1,4 @@
+import csv
 import os
 
 import numpy as np
@@ -160,10 +161,10 @@ def gen_mturk_explain_nli_relaxed(
     }
     LABEL_MAP = {0: "neutral", 1: "entailment", 2: "contradiction", 3: "none"}
 
-    df = pd.read_csv(las_file)
+    df = pd.read_csv(las_file, sep=",", quoting=csv.QUOTE_NONE, escapechar="\\")
     df = df[["hypothesis", "premise", "target", "prediction", "explanation", "leaked"]]
     # a hack: the unmatched case has some parts of the context in "hypothesis" as well
-    df["hypothesis"].apply(lambda x: str(x).split(" hypothesis: ")[-1])
+    df['hypothesis'] = df["hypothesis"].apply(lambda x: str(x).split(" hypothesis: ")[-1])
     df["target"] = df.target.apply(lambda x: NLI_MAP.get(LABEL_MAP[x], None))
     df["prediction"] = df.prediction.apply(lambda x: NLI_MAP.get(LABEL_MAP[x], None))
     df = df[~(df.target.isna() | df.prediction.isna())]
@@ -190,6 +191,7 @@ def gen_mturk_explain_nli_relaxed(
     )
 
     df["correct_pred"] = df.target == df.prediction
+    print(df.groupby(["correct_pred", "leaked"]).apply(lambda _df: _df.shape[0]))
     df = (
         df.groupby(["correct_pred", "leaked"])
         .apply(lambda _df: _df.sample(10))
@@ -207,56 +209,18 @@ def gen_mturk_explain_nli_relaxed(
     return df, df_mturk
 
 
-def gen_mturk_explain_nli(
-    inputs_file: os.PathLike,
-    targets_file: os.PathLike,
-    predictions_file: os.PathLike,
-    num_samples_per_category: int = 10,
-    tsv_file: os.PathLike = CIRCA,
-    seed: int = 7,
-) -> pd.DataFrame:
-
-    np.random.seed(seed)
-
-    df_circa = read_circa_original(tsv_file)
-
-    df = read_circa_test_data(inputs_file, targets_file, predictions_file)
-    df = (
-        df.set_index(["canquestion-X", "answer-Y"])
-        .join(df_circa.set_index(["canquestion-X", "answer-Y"]), how="inner")
-        .reset_index()
-    )
-
-    # select examples based on whether prediction is correct
-    df = pd.concat(
-        [
-            df[df.prediction == df.target].sample(num_samples_per_category),
-            df[df.prediction != df.target].sample(num_samples_per_category),
-        ]
-    )
-
-    # coalesce target and prediction
-    columns = ["context", "question-X", "answer-Y", "explanation"]
-    df_target = df[columns + ["target"]].rename(columns={"target": "interpretation"})
-    df_prediction = df[columns + ["prediction"]].rename(
-        columns={"prediction": "interpretation"}
-    )
-    df = pd.concat([df_target, df_prediction]).drop_duplicates()
-
-    return df.rename(columns={"question-X": "question", "answer-Y": "answer"})
-
-
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_csv', help='input csv file from LAS')
-    parser.add_argument('--output_csv', help='output csv file for MTurk')
+    parser.add_argument("--input_csv", help="input csv file from LAS")
+    parser.add_argument("--output_csv", help="output csv file for MTurk")
+    parser.add_argument('--num_sample', default=10, help='number of samples per category')
     args = parser.parse_args()
 
     # df, df_mturk = gen_mturk_explain_nli_relaxed("matched_data/circa/NLI/test.csv")
     # df.to_csv("input_explanation_original.csv", index=False)
     # df_mturk.to_csv("input_explanation.csv", index=False)
-    df, df_mturk = gen_mturk_explain_nli_relaxed(args.input_csv)
-    df.to_csv('original' + args.output_csv, index=False)
+    df, df_mturk = gen_mturk_explain_nli_relaxed(args.input_csv, args.num_sample)
+    df.to_csv("original" + args.output_csv, index=False)
     df_mturk.to_csv(args.output_csv, index=False)
