@@ -1,20 +1,20 @@
-# Interpreting Indirect Answers Using Self-Rationalizing Models
+# Interpreting Indirect Answers Using Self-Rationalizing Models 🤔 ❓
 
 This repository contains to run the experiments in our paper, `Interpreting Indirect Answers Using Self-Rationalizing Models`, where we finetune T5 [(Raffel et al., 2019)]((https://arxiv.org/abs/1910.10683)) to classify indirect answers and produce rationales which we evaluate with Leakage-Adjusted Simulatability [Hase et al., 2020](https://www.aclweb.org/anthology/2020.findings-emnlp.390.pdf) and human judgments of plausibility, faithfulness, and quality.
 
 We wrote this paper for the Spring 2021 edition of the University of Amsterdam MSc Artificial Intelligence course, [Computational Dialogue Modelling](https://cl-illc.github.io/cdm/).
 
-## Authors
+## 📖 Authors
 
 1. [Yun Li](https://github.com/MotherOfUnicorns)
 2. [Michael Neely](https://github.com/michaeljneely/)
 3. [Frederik Nolte](https://github.com/frederiknolte)
 
-## Method
+## 👩‍🔬 Method
 
 The Circa dataset [(Louis et al., 2020)](https://www.aclweb.org/anthology/2020.emnlp-main.601/) of (question, indirect answer) pairs does not come with human-provided rationales. To teach our T5 model to rationalize (generate a natural language explanation) its predictions on the Circa dataset, we employ a mixture task with data from two datasets that do contain such rationales.
 
-We finetune a [pretrained T5-Large](https://console.cloud.google.com/storage/browser/t5-data/pretrained_models) model on a mixture of data from the Circa, e-SNLI [(Camburu et al., 2018)](https://papers.nips.cc/paper/2018/hash/4c7a167bb329bd92580a99ce422d6fa6-Abstract.html) and Cos-E [Rajani et al., 2019](https://www.aclweb.org/anthology/P19-1487/) datasets. During the finetuning process we ask our T5 model to predict one of four labels in a Natural Language Inference style task. We also ask of our T5 model to rationalize some of its predictions on the e-SNLI and Cos-E datasets. Supervised rationale generation is possible for the latter two datasets, since they contain reference rationales.
+We finetune a [pretrained T5-Large](https://console.cloud.google.com/storage/browser/t5-data/pretrained_models) model on a mixture of data from the Circa, e-SNLI [(Camburu et al., 2018)](https://papers.nips.cc/paper/2018/hash/4c7a167bb329bd92580a99ce422d6fa6-Abstract.html) and Cos-E [(Rajani et al., 2019)](https://www.aclweb.org/anthology/P19-1487/) datasets. During the finetuning process we ask our T5 model to predict one of four labels in a Natural Language Inference style task. We also ask of our T5 model to rationalize some of its predictions on the e-SNLI and Cos-E datasets. Supervised rationale generation is possible for the latter two datasets, since they contain reference rationales.
 
 We then evaluate our finetuned T5 by asking it to both predict and rationalize instances from a held out Circa test set. We measure predictive power with accuracy. We measure rationale quality with the Leakage-Adjusted Simulatibilty metric as well as with human annotations of quality with a Mechanical Turk survey.
 
@@ -61,7 +61,7 @@ And the following in the **unmatched setting**: (with the optional explain keywo
     target: contradiction
 ```
 
-Since the Circa dataset has no pre-defined splits, we generate three unique splits based on three random seeds.
+Since the Circa dataset has no pre-defined splits, we generate three unique splits based on three random seeds. Those are available in [circa/data/](./circa/data/)
 
 ### E-SNLI Dataset
 
@@ -90,7 +90,7 @@ And the following when we want T5 to both predict and rationalize:
     target: contradiction. explanation: you can't lose if you always win.
 ```
 
-## Cos-E Dataset
+### Cos-E Dataset
 
 The Cos-E dataset provides common-sense explanations to some instances of the CommonSenseQA dataset [(Talmor et al., 2019)](https://www.aclweb.org/anthology/N19-1421/). Like Narang et al., 2020, we transform instances into an NLI/Question-Answering hybrid format, using a `premise` keyword for the question and `choice` keyword before each possible answer.
 
@@ -117,7 +117,7 @@ And the following when we want T5 to both predict and rationalize:
     target: neighbor's house explanation: This word is the most relevant
 ```
 
-## Experiments
+## 🧪 Experiments
 
 To reproduce our experiments on Google Cloud TPUs, please follow the instructions detailed in [finetune_on_gcp.md](finetune_on_gcp.md). We describe all of our experiments below. We conduct three runs of each experiment with three different seeds.
 
@@ -147,7 +147,7 @@ In these experiments, we finetune the T5 model on a mixture of five different ta
 
 We then select the model checkpoint with the highest accuracy on the Circa dataset and ask that model to both predict and rationalize all instances from the held out Circa test set. We train one model per seed in both the **matched** and **unmatched** setting.
 
-## Evaluation
+## 💯 Evaluation
 
 ### Leakage-Adjusted Simulatibility
 
@@ -161,6 +161,6 @@ We then use those predictions to train a DistilBERT simulator model per the meth
 
 We use test set predictions from the unmatched model with the highest LAS score to generate our Mechanical Turk survey. @YUN: add more details and maybe a link to a README here
 
-## Acknowledgments
+## ❤️ Acknowledgments
 
 We would like to thank Google for providing free access to Google Cloud `v3-8` TPUs via the [TPU Research Cloud](https://sites.research.google/trc/) program. We would also like to thank [Dr. Raquel Fernández](https://staff.fnwi.uva.nl/r.fernandezrovira/), [Mario Giulianelli](https://glnmario.github.io/) and [Ece Takmaz](https://ecekt.github.io/) for their assistance in conducting this research project.
