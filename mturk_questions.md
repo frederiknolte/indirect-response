@@ -225,6 +225,16 @@ Example explanation that only repeats the question:
 
 The conversations used as questions or as examples for survey instructions are excluded from our main survey.
 
+### Script for samples the data
+
+This is in `.scripts/generate_mturk_questions.py`.
+
+We generated two batches in total.
+- For the first batch we uniformly sampled 15 examples from each of the four categories `(leaked/nonleaked) x (correct/incorrect prediction)`. One of these questions had a formatting error, so we discarded that.
+    `python generate_mturk_questions.py --input_csv ~/Downloads/LAS_nli_relaxed_unmatched13_test_data_circa_NLI_test.csv --num_sample 15 --output_csv mturk_explain_unmatched.csv`
+- For the second batch we randomly sampled 41 examples from the remaining part of the test set.
+    `python generate_mturk_questions.py --input_csv ~/Downloads/LAS_nli_relaxed_unmatched13_test_data_circa_NLI_test.csv --num_samples 41 --output_csv mturk_explain_unmatched2.csv --exclude_samples mturk_explain_unmatched.csv`
+
 
 ## Instructions for the sign-up process on MTurk sandbox
 
@@ -237,3 +247,4 @@ The conversations used as questions or as examples for survey instructions are e
 
 
 To incentivize annotators, we provided Amazon coupons (25, 15, 10 eur) for those that annotated the most examples.
+

@@ -137,7 +137,8 @@ def read_circa_original(
 
 def gen_mturk_explain_nli_relaxed(
     las_file: os.PathLike,
-    num_samples_per_category: int = 10,
+    sample_per_category:bool=True,
+    num_samples: int = 10,
     tsv_file: os.PathLike = CIRCA,
     seed: int = 7,
     exclude_samples=None,
@@ -198,16 +199,18 @@ def gen_mturk_explain_nli_relaxed(
             columns={"question": "question-X", "answer": "premise"}
         )
         df_exclude["exclude"] = True
-        df = df.merge(df_exclude, on=["context", "question-X", "premise", 'explanation'], how="left")
+        df = df.merge(
+            df_exclude,
+            on=["context", "question-X", "premise", "explanation"],
+            how="left",
+        )
         df = df[df.exclude.isna()]
 
-    df["correct_pred"] = df.target == df.prediction
-    print(df.groupby(["correct_pred", "leaked"]).apply(lambda _df: _df.shape[0]))
-    df = (
-        df.groupby(["correct_pred", "leaked"])
-        .apply(lambda _df: _df.sample(num_samples_per_category))
-        .reset_index(drop=True)
-    ).rename(columns={"question-X": "question", "premise": "answer"})
+    df.rename(columns={"question-X": "question", "premise": "answer"}, inplace=True)
+    if sample_per_category:
+        df = _sample_per_category(df, num_samples)
+    else:
+        df = _sample_all_categories(df, num_samples)
 
     # coalesce target and prediction
     columns = ["context", "question", "answer", "explanation"]
@@ -220,13 +223,40 @@ def gen_mturk_explain_nli_relaxed(
     return df, df_mturk
 
 
+def _sample_per_category(df, num_samples_per_category):
+
+    df["correct_pred"] = df.target == df.prediction
+    print(
+        "total number of examples per category:",
+        df.groupby(["correct_pred", "leaked"]).apply(lambda _df: _df.shape[0]),
+    )
+    df = (
+        df.groupby(["correct_pred", "leaked"])
+        .apply(lambda _df: _df.sample(num_samples_per_category))
+        .reset_index(drop=True)
+    )
+    return df
+
+
+def _sample_all_categories(df, num_samples):
+
+    return df.sample(num_samples)
+
+
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_csv", help="input csv file from LAS")
     parser.add_argument("--output_csv", help="output csv file for MTurk")
-    parser.add_argument("--num_sample", type=int, help="number of samples per category")
+    parser.add_argument(
+        "--sample_per_category",
+        action="store_true",
+        help="sample per category or over all categories",
+    )
+    parser.add_argument(
+        "--num_samples", type=int, help="number of samples per category"
+    )
     parser.add_argument(
         "--exclude_samples", help="csv file containing samples to exclude"
     )
@@ -237,7 +267,8 @@ if __name__ == "__main__":
     # df_mturk.to_csv("input_explanation.csv", index=False)
     df, df_mturk = gen_mturk_explain_nli_relaxed(
         args.input_csv,
-        num_samples_per_category=args.num_sample,
+        sample_per_category=args.sample_per_category,
+        num_samples=args.num_samples,
         exclude_samples=args.exclude_samples,
     )
     df.to_csv("original" + args.output_csv, index=False)

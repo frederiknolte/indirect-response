@@ -1,0 +1,48 @@
+context,question,answer,explanation,interpretation
+Y has just told X that he/she is considering switching his/her job.,Does it involve a lot of time at your desk?,I am chained to my desk.,I am chained to my desk implies it does involve a lot of time at my desk.,Yes
+X wants to know what sorts of books Y likes to read.,Are you a fan of classic literature?,Classic literature is classic for a reason.,Classic literature is classic for a reason implies that I am a fan of classic literature.,Yes
+X wants to know what sorts of books Y likes to read.,Are you a fan of science fiction?,I hate anything about it,I hate anything about science fiction.,No
+Y has just told X that he/she is considering switching his/her job.,Do you need to learn new skills for this new job?,I may need to take a course.,I may need to take a course to learn new skills for this new job.,Yes
+Y has just told X that he/she is considering switching his/her job.,Are you going to relocate?,It's only a 10 minute drive from my place.,It's only a 10 minute drive from my place implies that I am going to relocate.,No
+Y has just told X that he/she is considering switching his/her job.,Is your current job too stressful?,I've had time off for stress.,Having time off for stress is a rephrasing of job is too stressful.,Yes
+Y has just told X that he/she is considering switching his/her job.,Do you have to do shift work?,I'm on the night shift.,I have to do shift work because I'm on the night shift.,Yes
+Y has just told X that he/she is considering switching his/her job.,Is it a newly formed company?,They were founded in 1945.,A newly formed company was not founded in 1945.,No
+Y has just told X that he/she is considering switching his/her job.,Have you worked for a corporation before?,I've been at the same job since high school.,I have worked for a corporation before is a rephrasing of I've been at the same job since high school.,No
+X wants to know what sorts of books Y likes to read.,Have you enjoy cooking?,I have a few cookbooks in my cupboard.,cookbooks are used for cooking,Yes
+Y has just told X that he/she is considering switching his/her job.,Are you quitting because of your boss?,"My boss is fine, but I need something more challenging.",The person is either quitting or considering quitting.,No
+X wants to know what sorts of books Y likes to read.,Do you read self-help books?,I need all the help I can get.,X and Y are different.,Yes
+X wants to know what sorts of books Y likes to read.,Have you read the Harry Potter collection?,Harry is old news.,Harry Potter collection is not old news.,"In the middle, neither yes nor no"
+X wants to know what sorts of books Y likes to read.,Do you like to read autobiography books?,I find them dull.,"I find autobiography books dull, so I can't read them.",No
+Y has just told X that he/she is considering switching his/her job.,Would you like working in a factory?,It sounds like it would be pretty loud and grimy.,The sounds like it would be pretty loud and grimy does not imply that I would like working in a factory.,No
+Y has just told X that he/she is considering switching his/her job.,Are you going to take any new courses to better your chances?,I'm taking a code writing class right now.,I'm taking a code writing class right now implies I am going to take new courses to better,Yes
+Y has just told X that he/she is considering switching his/her job.,Is there a pension scheme available ?,There seems to be one available.,There seems to be a pension scheme available is a rephrasing of there is a pension scheme available.,Yes
+X wants to know what sorts of books Y likes to read.,Do you get your books from the library?,I usually do,I usually get my books from the library.,Yes
+Y has just told X that he/she is considering switching his/her job.,Are you working in an office?,I work on a rooftop.,The rooftop is not an office.,No
+X wants to know what sorts of books Y likes to read.,Can you read more than one book at a time?,I like to focus on a single book.,I can't read more than one book at a time if I want to focus on a single book.,No
+Y has just told X that he/she is considering switching his/her job.,Is it technical?,Anyone could do it.,"Anyone could do it, so it is technical.",No
+X wants to know what sorts of books Y likes to read.,Have you ever read a mystery novel?,I've read a handful of them.,A mystery novel is a type of book.,Yes
+X wants to know what sorts of books Y likes to read.,Do you read science type books?,Science is boring.,Science is boring is not the same as science type books.,No
+Y has just told X that he/she is considering switching his/her job.,Are you looking for something more mentally challenging?,I'm challenged enough at my current job.,The person is either looking for something more mentally challenging or is already challenged.,No
+Y has just told X that he/she is considering switching his/her job.,Did you have nice bosses?,My superiors were not the best people to work for.,The bosses were not nice.,No
+X wants to know what sorts of books Y likes to read.,Have you read the 50 Shades trilogy yet?,Is that about oil?,The 50 shades trilogy is not about oil.,No
+X wants to know what sorts of books Y likes to read.,Have you read any bestsellers lately?,In the past,Bestsellers are a type of book.,No
+Y has just told X that he/she is considering switching his/her job.,Is it full-time?,That's the only option.,Full-time is the only option.,Yes
+Y has just told X that he/she is considering switching his/her job.,Are you happy at your present job?,I'm not satisfied.,I'm not satisfied is the opposite of happy.,No
+Y has just told X that he/she is considering switching his/her job.,Do you do your job remotely?,I cannot work from home.,I cannot work remotely if I cannot work from home.,No
+X wants to know what sorts of books Y likes to read.,Are you a history fan?,I wouldn't say so,I am not a history fan.,No
+Y has just told X that he/she is considering switching his/her job.,Do you like your colleagues?,I have a great team.,I have a great team is a rephrasing of I like my colleagues.,Yes
+X wants to know what sorts of books Y likes to read.,Do you like fictional books?,I only read nonfiction.,Fictional books are not nonfiction.,No
+X wants to know what sorts of books Y likes to read.,Are you willing to read this book together?,If you like,"If you like a book, you are willing to read it.",Yes
+Y has just told X that he/she is considering switching his/her job.,Have you been considering this for awhile?,For the past six months or so.,For the past six months or so is a rephrasing of for awhile.,Yes
+X wants to know what sorts of books Y likes to read.,Do you enjoy biographies?,I read one once a year or so.,biographies are books,Yes
+X wants to know what sorts of books Y likes to read.,Are nonfiction books interesting to you?,I prefer fiction.,Fiction and nonfiction are different.,No
+Y has just told X that he/she is considering switching his/her job.,Do you like your company?,I'm ready for a change.,"If a person is ready for a change, they are not currently in the process of doing so.",No
+Y has just told X that he/she is considering switching his/her job.,Do you deal with people all the time?,I work in customer care.,I deal with people all the time because I work in customer care.,Yes
+X wants to know what sorts of books Y likes to read.,Have you heard of the Father Brown mysteries?,Is that religious fiction?,Father Brown mysteries are not religious fiction.,No
+Y has just told X that he/she is considering switching his/her job.,Have you worked for a corporation before?,I do in my current job.,I have worked for a corporation before is a rephrasing of I do in my current job.,Yes
+Y has just told X that he/she is considering switching his/her job.,Are you going to relocate?,It's only a 10 minute drive from my place.,It's only a 10 minute drive from my place implies that I am going to relocate.,Yes
+Y has just told X that he/she is considering switching his/her job.,Have you worked for a corporation before?,I've been at the same job since high school.,I have worked for a corporation before is a rephrasing of I've been at the same job since high school.,Yes
+X wants to know what sorts of books Y likes to read.,Do you read self-help books?,I need all the help I can get.,X and Y are different.,No
+X wants to know what sorts of books Y likes to read.,Have you read the Harry Potter collection?,Harry is old news.,Harry Potter collection is not old news.,No
+Y has just told X that he/she is considering switching his/her job.,Is it technical?,Anyone could do it.,"Anyone could do it, so it is technical.",Yes
+X wants to know what sorts of books Y likes to read.,Have you read any bestsellers lately?,In the past,Bestsellers are a type of book.,Yes
