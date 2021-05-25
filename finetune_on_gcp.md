@@ -131,7 +131,7 @@ PYTHONPATH=$PYTHONPATH:/home/$USER/indirect-response/google-research/ t5_mesh_tr
 To validate the model you need to set the `VAL_TASK` variable. The value depends on what you want to validate. For example, if you want to validate every task in your training mixture, you can set `VAL_TASK` to the same value as `TASK`.
 
 ```shell
-    export EVAL_TASK=...(e.g., "circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}")
+    export VAL_TASK=...(e.g., "circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}")
 ```
 
 Then you can start validating your model:
@@ -220,10 +220,10 @@ To verify no more TPU nodes are active, run:
 
 Consult the following table to see the environment variables we set for our experiments.
 
-| Experiment | `TASK` | `EVAL_TASK` | `FINAL_EVAL_TASK` |
+| Experiment | `TASK` | `VAL_TASK` | `FINAL_EVAL_TASK` |
 | ---------- | ------ | ----------- | ----------------- |
-| Circa baseline | `TASK=circa_v100_0_expln_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}` | `EVAL_TASK="${TASK}` | `FINAL_EVAL_TASK="${TASK}"` |
-|Circa baseline - premise only | `TASK="circa_nli_baseline_premise_only_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `EVAL_TASK="${TASK}` | `FINAL_EVAL_TASK="${TASK}"` |
-|Circa baseline - hypothesis only | `TASK="circa_nli_baseline_hypothesis_only_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `EVAL_TASK="${TASK}` | `FINAL_EVAL_TASK="${TASK}"` |
-| Zero Shot - e-SNLI and Cos-E to Circa | `TASK="esnli_and_cos_e_to_circa_zero_shot"` | `EVAL_TASK="circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `FINAL_EVAL_TASK="${EVAL_TASK}"` |
-| Full mixture (the main experiments) | `TASK="esnli_and_cos_e_to_circa_nli_${CIRCA_TYPE}${RANDOM_SEED}"` | `EVAL_TASK="circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `FINAL_EVAL_TASK="${EVAL_TASK}"`
+| Circa baseline | `TASK=circa_v100_0_expln_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}` | `VAL_TASK="${TASK}` | `FINAL_EVAL_TASK="${TASK}"` |
+|Circa baseline - premise only | `TASK="circa_nli_baseline_premise_only_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `VAL_TASK="${TASK}` | `FINAL_EVAL_TASK="${TASK}"` |
+|Circa baseline - hypothesis only | `TASK="circa_nli_baseline_hypothesis_only_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `VAL_TASK="${TASK}` | `FINAL_EVAL_TASK="${TASK}"` |
+| Zero Shot - e-SNLI and Cos-E to Circa | `TASK="esnli_and_cos_e_to_circa_zero_shot"` | `VAL_TASK="circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `FINAL_EVAL_TASK="${VAL_TASK}"` |
+| Full mixture (the main experiments) | `TASK="esnli_and_cos_e_to_circa_nli_${CIRCA_TYPE}${RANDOM_SEED}"` | `VAL_TASK="circa_eval_v100_nli_relaxed_${CIRCA_TYPE}${RANDOM_SEED}"` | `FINAL_EVAL_TASK="${VAL_TASK}"`
