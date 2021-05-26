@@ -11,6 +11,23 @@ CIRCA = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), "../circa/circa-data.tsv"
 )
 
+GENERIC_ANSWERS_POSITIVE = [
+    "sounds good",
+    "sounds great",
+    "good idea",
+    "great idea",
+    "let's do it",
+    "I think so",
+    "I'd love to",
+]
+GENERIC_ANSWERS_NEGATIVE = [
+    "not anymore",
+    "not really",
+    "not yet",
+    "I'm not a fan",
+    "I have not",
+]
+
 
 def read_circa(tsv_file: os.PathLike = CIRCA) -> pd.DataFrame:
 
@@ -27,8 +44,12 @@ def read_circa(tsv_file: os.PathLike = CIRCA) -> pd.DataFrame:
 
 def _calc_bleu(_df):
 
+    num_entries = _df.shape[0]
+    generic_responses_padded = np.array([GENERIC_ANSWERS_POSITIVE + GENERIC_ANSWERS_NEGATIVE] * num_entries).T
+    ref = [_df['canquestion-X'].tolist()] + generic_responses_padded.tolist()
+
     bleu = sacrebleu.corpus_bleu(
-        _df["answer-Y"].tolist(), [_df["canquestion-X"].tolist()]
+        _df['answer-Y'].tolist(), ref
     )
     return bleu
 
@@ -46,7 +67,7 @@ def calc_bleu_scores(tsv_file=CIRCA):
 def bleu_significance_test(
     tsv_file=CIRCA, relaxed=True, num_samples=100, sample_size=100
 ):
-    '''wilcoxon test for samples from pairs of categories'''
+    """wilcoxon test for samples from pairs of categories"""
 
     df = read_circa(tsv_file)
     if relaxed:
