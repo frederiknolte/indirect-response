@@ -223,7 +223,7 @@ Example explanation that only repeats the question:
 
 ### Excluded examples
 
-The conversations used as questions or as examples for survey instructions are excluded from our main survey.
+The conversations used as questions in the first part of the survey or as examples for survey instructions are excluded from our main survey.
 
 ### Script for samples the data
 
