@@ -95,7 +95,7 @@ PATTERNS = OrderedDict({
 
 
 INPUTS = {
-    'train': 'predictions/esnli_and_cos_e_to_circa_nli_relaxed_unmatched13_train_eval_circa_v100_nli_relaxed_unmatched13_inputs', 
+    'train': 'predictions/esnli_and_cos_e_to_circa_nli_relaxed_unmatched13_train_eval_circa_v100_nli_relaxed_unmatched13_inputs',
     'val': 'predictions/esnli_and_cos_e_to_circa_nli_relaxed_unmatched13_validation_eval_circa_eval_v100_nli_relaxed_unmatched13_inputs',
     'test': 'predictions/esnli_and_cos_e_to_circa_nli_relaxed_unmatched13_test_eval_circa_eval_v100_nli_relaxed_unmatched13_inputs'
 }
@@ -107,7 +107,7 @@ PREDICTIONS = {
 }
 
 TARGETS = {
-    'train': 'predictions/esnli_and_cos_e_to_circa_nli_relaxed_unmatched13_train_eval_circa_v100_nli_relaxed_unmatched13_targets', 
+    'train': 'predictions/esnli_and_cos_e_to_circa_nli_relaxed_unmatched13_train_eval_circa_v100_nli_relaxed_unmatched13_targets',
     'val': 'predictions/esnli_and_cos_e_to_circa_nli_relaxed_unmatched13_validation_eval_circa_eval_v100_nli_relaxed_unmatched13_targets',
     'test': 'predictions/esnli_and_cos_e_to_circa_nli_relaxed_unmatched13_test_eval_circa_eval_v100_nli_relaxed_unmatched13_targets'
 }
@@ -302,7 +302,7 @@ def build_t5_outputs_frame() -> pd.DataFrame:
             premise = remove_formatting(premise)
             hypothesis = remove_formatting(hypothesis)
             context = remove_formatting(context)
-      
+
             rationale = remove_formatting(rationale)
 
             # match rationales by regex and name the pattern
@@ -318,7 +318,7 @@ def build_t5_outputs_frame() -> pd.DataFrame:
                         if match:
                             # anything past the first two matches is overflow
                             # but there should be at least two
-                            assert len(match.groups()) >= 2 
+                            assert len(match.groups()) >= 2
                             s1, s2 = match.group(1).strip(), match.group(2).strip()
 
                             s1 = remove_formatting(s1)
@@ -337,6 +337,9 @@ def build_t5_outputs_frame() -> pd.DataFrame:
                 pattern_name = span1_label or 'unique'
                 if span2_label:
                     pattern_name = pattern_name + '_' + span2_label
+
+                if pattern_name != 'unique':
+                    pattern_name = 'parrot_' + pattern_name
 
             # add to frame
             df['split'].append(split)
