@@ -93,7 +93,7 @@ def bleu_significance_test(
     return significance
 
 
-def calc_las_per_target(las_csv: os.PathLike, seed: int = 948):
+def calc_las_per_target(las_csv: os.PathLike, seed: int):
     LABEL_MAP = {0: "neutral", 1: "entailment", 2: "contradiction", 3: "none"}
 
     df = pd.read_csv(las_csv)
