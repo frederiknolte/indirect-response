@@ -10,6 +10,10 @@ We wrote this paper for the Spring 2021 edition of the University of Amsterdam M
 2. [Michael Neely](https://github.com/michaeljneely/)
 3. [Frederik Nolte](https://github.com/frederiknolte)
 
+## 🖊️ Abstract
+
+A joint process of label prediction and free-form natural language rationale generation has been shown to offer faithful insights into a model's internal reasoning process. In this work, we formulate a text-to-text mixture task to investigate if we can successfully transfer self-rationalization capacity from existing human-provided explanations of natural language inference and question answering examples to the interpretation of indirect answers to polar questions. We show that our setup enables a model to generate faithful and coherent rationales — as measured by simulatability and human judgments of quality — with a minimal loss in predictive power when interpreting indirect answers. We identify evident shortcomings in our model's reasoning capacity through an extensive analysis of the generated rationales. Our results offer a clear direction in which the community can improve the logical prowess of current text-to-text models.
+
 ## 👩‍🔬 Method
 
 The Circa dataset [(Louis et al., 2020)](https://www.aclweb.org/anthology/2020.emnlp-main.601/) of (question, indirect answer) pairs does not come with human-provided rationales. To teach our T5 model to rationalize (generate a natural language explanation) its predictions on the Circa dataset, we employ a mixture task with data from two datasets that do contain such rationales.
@@ -174,7 +178,7 @@ For more details of this survey, see [Mechanical Turk Survey](mturk_questions.md
 
 ## 🥇 Results
 
-Read our paper, view our [presentation](slides.pdf), or explore the IPython notebooks in this repository to learn more!
+Read our [paper](interpreting_indirect_answers_using_self_rationalizing_models.pdf), view our [presentation](slides.pdf), or explore the IPython notebooks in this repository to learn more!
 
 ## ❤️ Acknowledgments
 
