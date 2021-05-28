@@ -29,7 +29,7 @@ We modify to Natural Language Inference setting to match the E-SNLI dataset  whi
 5. `Other --> none`
 6. `N/A --> none`
 
-We begin all input sequences with `nli` keyword to tell T5 that this is an NLI task. If we want T5 to explain its prediction, we put the `explain` keyword before `nli`. We use the declarative form of the question (e.g., `Do you have any pets` becomes `You have pets`) as the **premise**, prepended with a `premise:` keyword. We use the answer (e.g., `My cat just turned one year old`) as the **hypothesis** prepended with a `hypothesis:` keyword.
+We begin all input sequences with `nli` keyword to tell T5 that this is an NLI task. If we want T5 to explain its prediction, we put the `explain` keyword before `nli`. We use the declarative form of the question (e.g., `Do you have any pets` becomes `You have pets`) as the **hypothesis**, prepended with a `hypothesis:` keyword. We use the answer (e.g., `My cat just turned one year old`) as the **premise** prepended with a `premise:` keyword.
 
 The Circa Dataset has two settings:
 
@@ -50,14 +50,14 @@ Thus, we transform a relaxed Circa Example such as:
 Into the following in the **matched setting** (with the optional explain keyword at the start):
 
 ```code
-    input: nli premise: I did drive straight here. hypothesis: I had to stop at my mom's house.
+    input: nli hypothesis: I did drive straight here. premise: I had to stop at my mom's house.
     target: contradiction
 ```
 
 And the following in the **unmatched setting**: (with the optional explain keyword at the start):
 
 ```code
-    input: nli context: Y has just travelled from a different city to meet X. premise: I did drive straight here. hypothesis: I had to stop at my mom's house.
+    input: nli context: Y has just travelled from a different city to meet X. hypothesis: I did drive straight here. premise: I had to stop at my mom's house.
     target: contradiction
 ```
 
@@ -79,14 +79,14 @@ Thus, we tranformed an e-SNLI example such as:
 Into the following when we want T5 to only predict the correct label:
 
 ```code
-    input: nli premise: Cardinals lost last night. hypothesis: The Saint Louis Cardinals always win.
+    input: nli hypothesis: The Saint Louis Cardinals always win. premise: Cardinals lost last night.
     target: contradiction
 ```
 
 And the following when we want T5 to both predict and rationalize:
 
 ```code
-    input: explain nli premise: Cardinals lost last night. hypothesis: The Saint Louis Cardinals always win.
+    input: explain nli hypothesis: The Saint Louis Cardinals always win. premise: Cardinals lost last night.
     target: contradiction. explanation: you can't lose if you always win.
 ```
 
@@ -106,14 +106,14 @@ For example, we transform the following Cos-E instance:
 Into the following when we want T5 to only predict the correct label:
 
 ```code
-    input: nli premise: nli premise: Where can you go to use a piano in your neighborhood if you don't have one? choice: music school choice: music store choice: neighbor's house choice: lunch choice: drawing room
+    input: nli premise: Where can you go to use a piano in your neighborhood if you don't have one? choice: music school choice: music store choice: neighbor's house choice: lunch choice: drawing room
     target: neighbor's house
 ```
 
 And the following when we want T5 to both predict and rationalize:
 
 ```code
-    input: explain nli premise: nli premise: Where can you go to use a piano in your neighborhood if you don't have one? choice: music school choice: music store choice: neighbor's house choice: lunch choice: drawing room
+    input: explain nli premise: Where can you go to use a piano in your neighborhood if you don't have one? choice: music school choice: music store choice: neighbor's house choice: lunch choice: drawing room
     target: neighbor's house explanation: This word is the most relevant
 ```
 
@@ -160,6 +160,10 @@ We then use those predictions to train a DistilBERT simulator model per the meth
 ### Human Survey
 
 We use test set predictions from the unmatched model with the highest LAS score to generate our Mechanical Turk survey. @YUN: add more details and maybe a link to a README here
+
+## Results
+
+Read our paper, view our presentation, or explore the IPython notebooks in this repository to learn more!
 
 ## ❤️ Acknowledgments
 
