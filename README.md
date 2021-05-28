@@ -172,9 +172,9 @@ of our model.
 
 For more details of this survey, see [Mechanical Turk Survey](mturk_questions.md).
 
-## Results
+## 🥇 Results
 
-Read our paper, view our presentation, or explore the IPython notebooks in this repository to learn more!
+Read our paper, view our [presentation](slides.pdf), or explore the IPython notebooks in this repository to learn more!
 
 ## ❤️ Acknowledgments
 
