@@ -266,7 +266,7 @@ def build_annotator_frame(csv_paths: List[PathLike]) -> pd.DataFrame:
 def build_t5_outputs_frame() -> pd.DataFrame:
 
     df = {
-        'pattern': [], # the name of the unique regex pattern
+        'template': [], # the name of the unique regex pattern
         'split': [], # train, test, or val
         'rationale': [], # the formatted rationale
         'span1_label': [], # either premise, hypothesis, context, or None
@@ -343,7 +343,7 @@ def build_t5_outputs_frame() -> pd.DataFrame:
 
             # add to frame
             df['split'].append(split)
-            df['pattern'].append(pattern_name)
+            df['template'].append(pattern_name)
             df['predicted_label'].append(prediction)
             df['target_label'].append(target)
             df['span1_label'].append(span1_label)
@@ -366,8 +366,7 @@ if __name__ == "__main__":
     ])
 
     ANNOTATOR_FRAME = build_annotator_frame([
-        'predictions/explain_batch1.csv',
-        'predictions/explain_batch2.csv'
+        'predictions/final_survey_results.csv',
     ])
 
     PATTERN_FRAME = build_t5_outputs_frame()
