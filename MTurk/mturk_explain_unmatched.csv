@@ -1,0 +1,91 @@
+context,question,answer,explanation,interpretation
+X wants to know what sorts of books Y likes to read.,Have you read the new Game of Thrones books?,I'm on my second read now.,"The first sentence says I'm on my second read, the second sentence says I have read the new Game of Thrones books.",Yes
+Y has just told X that he/she is considering switching his/her job.,Are you a supervisor?,I have never been given a promotion.,I have never been given a promotion so I am a supervisor.,No
+X wants to know what sorts of books Y likes to read.,Do you prefer biographies?,I do not read them,"I prefer biographies, so I do not read them.",No
+X wants to know what sorts of books Y likes to read.,Do you like self-help books?,I can use all the help I can get.,Not all books are self-help books.,Yes
+X wants to know what sorts of books Y likes to read.,Do you like to read self-help books?,I am a work in progress.,Not all books are self-help books.,Yes
+X wants to know what sorts of books Y likes to read.,Do you like Harry Potter?,I am not familiar with Harry.,I like Harry Potter so I am familiar with Harry.,"In the middle, neither yes nor no"
+X wants to know what sorts of books Y likes to read.,Do you like suspense novels?,I haven't read in years.,Not all books are suspense novels.,No
+Y has just told X that he/she is considering switching his/her job.,Do you like the idea of signing up with recruitment agents?,it doesn't bother me,It doesn't bother me doesn't mean I like the idea of signing up with recruitment agents.,Yes
+X wants to know what sorts of books Y likes to read.,Do you prefer biographies?,There are some good ones.,Not all books are biographies.,Yes
+Y has just told X that he/she is considering switching his/her job.,Have you ever worked in a kitchen?,I'm a terrible cook.,If you are a terrible cook you have worked in a kitchen.,No
+Y has just told X that he/she is considering switching his/her job.,Do you work with a lot of people?,Less than 50,A lot of people is more than 50.,"In the middle, neither yes nor no"
+Y has just told X that he/she is considering switching his/her job.,Have you worked in your field for long?,It's hard to say how long is too long.,It's hard to say how long is too long if you have worked in a field for a long time.,"In the middle, neither yes nor no"
+Y has just told X that he/she is considering switching his/her job.,Do you have to do shift work?,I'm salaried.,I'm salaried which means I have to do shift work.,No
+X wants to know what sorts of books Y likes to read.,Is fiction what you're mostly into?,I'm mostly into non fiction.,I'm mostly into non fiction shows that I am.,No
+Y has just told X that he/she is considering switching his/her job.,Is it a more senior position?,It is a lateral move.,A lateral move does not imply a more senior position.,No
+Y has just told X that he/she is considering switching his/her job.,It is about the pay?,I don't like my boss.,Just because Y has just told X that he/she is considering switching his/her job does not mean it is about the pay.,No
+X wants to know what sorts of books Y likes to read.,Have you read the new Stephen King book?,Which one?,Stephen King is not a book.,"In the middle, neither yes nor no"
+X wants to know what sorts of books Y likes to read.,Do you enjoy mysteries?,I've never read any.,Just because X wants to know what sorts of books Y likes to read does not mean he enjoys mysteries.,No
+Y has just told X that he/she is considering switching his/her job.,Is your work physically demanding?,More mentally demanding,More mentally demanding is a rephrasing of work is demanding.,No
+Y has just told X that he/she is considering switching his/her job.,Are you interesting in switching careers?,I just want to make a lateral move.,I just want to make a lateral move implies I am interested in switching careers.,No
+Y has just told X that he/she is considering switching his/her job.,Is it more in line with your skill set?,It's about the same as my current job in that respect.,It is more in line with my skill set because it is about the same as my current job.,"In the middle, neither yes nor no"
+Y has just told X that he/she is considering switching his/her job.,Do you spend a lot of time in an office?,It feels more like a shoebox.,The office is not a shoebox.,Yes
+X wants to know what sorts of books Y likes to read.,Does a long novel sound good?,I usually have several going at once.,A long novel is not the same as several books.,Yes
+Y has just told X that he/she is considering switching his/her job.,Do you want something in a different field?,I want to work indoors.,I want to work indoors or in a different field.,Yes
+Y has just told X that he/she is considering switching his/her job.,Do you like your company?,It's fine.,I like my company is a rephrasing of ''I like my company. '',"In the middle, neither yes nor no"
+Y has just told X that he/she is considering switching his/her job.,Do you need a college degree for the job?,My BA Honours has come in very handy.,BA is not a college degree.,"In the middle, neither yes nor no"
+Y has just told X that he/she is considering switching his/her job.,It is about the pay?,I can't live on what I'm getting at the moment.,The subject is either Y or X.,Yes
+X wants to know what sorts of books Y likes to read.,Do you like mysteries?,I only read them once in a while.,I like mysteries but I only read them once in a while.,Yes
+Y has just told X that he/she is considering switching his/her job.,Are you not happy with you work conditions?,Not really they are quire bad,Not really they are quire bad is a rephrasing of I am happy with.,No
+Y has just told X that he/she is considering switching his/her job.,Do you have a specific job in mind?,I'm looking at programming jobs.,Y is not X.,Yes
+Y has just told X that he/she is considering switching his/her job.,Does it pay better?,If it didn't I wouldn't be considering it.,"If it doesn't I wouldn't be considering it, it does pay better.",Yes
+Y has just told X that he/she is considering switching his/her job.,Did you enjoy your time as a bus driver before your current job?,I got a lot out of it.,I enjoyed my time as a bus driver before my current job.,Yes
+Y has just told X that he/she is considering switching his/her job.,Is your job related to IT?,It's music,IT IS NOT MUSIC,No
+X wants to know what sorts of books Y likes to read.,Do you like science fiction books?,I'm not a sci-fi fan.,I like science fiction books so I am a sci-fi fan.,No
+Y has just told X that he/she is considering switching his/her job.,Have you ever attended a job fair?,I went to the one at the university last year.,I went to the fair at the university last year.,Yes
+Y has just told X that he/she is considering switching his/her job.,Do you work alone?,most of the time I do,Most of the time I do work alone.,Yes
+X wants to know what sorts of books Y likes to read.,Are you a fan of the Harry Potter series?,I wouldn't say that,Harry Potter is a series of books.,No
+X wants to know what sorts of books Y likes to read.,Do you like to read romances?,I've never had the heart for it.,I like to read romances.,No
+Y has just told X that he/she is considering switching his/her job.,Have you ever taken a day off sick when you were not actually sick?,"Once, back in high school.",I have taken a day off sick when I was not actually sick.,Yes
+X wants to know what sorts of books Y likes to read.,Have you read the new Stephen King book?,I've never read anything by him.,Stephen King is a famous author.,No
+X wants to know what sorts of books Y likes to read.,Do you like romantic stories?,It is not my favorite genre,Romantic stories are a genre.,No
+X wants to know what sorts of books Y likes to read.,Did you read The Pony of Midnight?,I haven't read it yet,The Pony of Midnight is a book.,No
+Y has just told X that he/she is considering switching his/her job.,Have you had,"ones?"",""I work in a call centre.",I work in a call centre so I have had to answer phones.,Yes
+Y has just told X that he/she is considering switching his/her job.,Are you not enjoying your current job?,I don't feel fulfilled.,"If someone is enjoying their job, they are fulfilled.",No
+Y has just told X that he/she is considering switching his/her job.,Did you work in tech?,When I was younger.,"When I was younger, I did work in tech.",Yes
+Y has just told X that he/she is considering switching his/her job.,Have you taken a Uber?,That's never worth it.,Uber is different than never worth it.,No
+Y has just told X that he/she is considering switching his/her job.,Do you like your company?,I've never liked working for this company.,I like my company is different from never liked working for this company.,No
+X wants to know what sorts of books Y likes to read.,Have you ever ready Stephen King books?,I read It a while back.,Stephen King is a famous author.,Yes
+X wants to know what sorts of books Y likes to read.,Do you like to read paper magazines?,I never seem to get around to my growing unread pile.,The subject cannot be X and Y.,No
+X wants to know what sorts of books Y likes to read.,Do you choose books based on reader reviews?,I always have to check the reviews first,I choose books based on reader reviews is a rephrasing of i always have to check the reviews first.,Yes
+Y has just told X that he/she is considering switching his/her job.,Have you been with the company long?,I feels like it's been forever.,I have been with the company long is a rephrasing of I feels like it's been forever.,Yes
+X wants to know what sorts of books Y likes to read.,Are you a fan of series?,usually i am,Usually i am a fan of series.,Yes
+Y has just told X that he/she is considering switching his/her job.,Do you like working the production line?,It is good work,It is good work implies I like working.,Yes
+X wants to know what sorts of books Y likes to read.,Do you get your books from the library?,I borrow ebooks from the library.,I borrow ebooks from the library is a rephrasing of '' I get my books from the library. '',Yes
+Y has just told X that he/she is considering switching his/her job.,Do you prefer a different career?,I think I need to change paths.,I prefer a different career is a rephrasing of I think I need to change paths.,Yes
+Y has just told X that he/she is considering switching his/her job.,Do you like to do repetitive work?,I'm not a fan of busywork.,Busywork is not repetitive.,No
+Y has just told X that he/she is considering switching his/her job.,Is it full-time?,I'll be working 5 days a week.,full-time is 5 days a week,Yes
+Y has just told X that he/she is considering switching his/her job.,Have you spent a long time at your current job?,"I just vested, so five years?",Five years is a long time.,Yes
+X wants to know what sorts of books Y likes to read.,Do you like mysteries?,they are a favorite of mine,favorite of mine is same as I like,Yes
+Y has just told X that he/she is considering switching his/her job.,Is it a pay increase?,I might get a little bump up.,A bump up is a pay increase.,Yes
+X wants to know what sorts of books Y likes to read.,Have you read the new Game of Thrones books?,I'm on my second read now.,"The first sentence says I'm on my second read, the second sentence says I have read the new Game of Thrones books.",No
+Y has just told X that he/she is considering switching his/her job.,Are you a supervisor?,I have never been given a promotion.,I have never been given a promotion so I am a supervisor.,Yes
+X wants to know what sorts of books Y likes to read.,Do you prefer biographies?,I do not read them,"I prefer biographies, so I do not read them.",Yes
+X wants to know what sorts of books Y likes to read.,Do you like self-help books?,I can use all the help I can get.,Not all books are self-help books.,"In the middle, neither yes nor no"
+X wants to know what sorts of books Y likes to read.,Do you like to read self-help books?,I am a work in progress.,Not all books are self-help books.,"In the middle, neither yes nor no"
+X wants to know what sorts of books Y likes to read.,Do you like Harry Potter?,I am not familiar with Harry.,I like Harry Potter so I am familiar with Harry.,No
+X wants to know what sorts of books Y likes to read.,Do you like suspense novels?,I haven't read in years.,Not all books are suspense novels.,"In the middle, neither yes nor no"
+Y has just told X that he/she is considering switching his/her job.,Do you like the idea of signing up with recruitment agents?,it doesn't bother me,It doesn't bother me doesn't mean I like the idea of signing up with recruitment agents.,"In the middle, neither yes nor no"
+X wants to know what sorts of books Y likes to read.,Do you prefer biographies?,There are some good ones.,Not all books are biographies.,"In the middle, neither yes nor no"
+Y has just told X that he/she is considering switching his/her job.,Have you ever worked in a kitchen?,I'm a terrible cook.,If you are a terrible cook you have worked in a kitchen.,Yes
+Y has just told X that he/she is considering switching his/her job.,Do you work with a lot of people?,Less than 50,A lot of people is more than 50.,No
+Y has just told X that he/she is considering switching his/her job.,Have you worked in your field for long?,It's hard to say how long is too long.,It's hard to say how long is too long if you have worked in a field for a long time.,Yes
+Y has just told X that he/she is considering switching his/her job.,Do you have to do shift work?,I'm salaried.,I'm salaried which means I have to do shift work.,Yes
+X wants to know what sorts of books Y likes to read.,Is fiction what you're mostly into?,I'm mostly into non fiction.,I'm mostly into non fiction shows that I am.,Yes
+Y has just told X that he/she is considering switching his/her job.,Is it a more senior position?,It is a lateral move.,A lateral move does not imply a more senior position.,"In the middle, neither yes nor no"
+Y has just told X that he/she is considering switching his/her job.,It is about the pay?,I don't like my boss.,Just because Y has just told X that he/she is considering switching his/her job does not mean it is about the pay.,"In the middle, neither yes nor no"
+X wants to know what sorts of books Y likes to read.,Have you read the new Stephen King book?,Which one?,Stephen King is not a book.,No
+X wants to know what sorts of books Y likes to read.,Do you enjoy mysteries?,I've never read any.,Just because X wants to know what sorts of books Y likes to read does not mean he enjoys mysteries.,"In the middle, neither yes nor no"
+Y has just told X that he/she is considering switching his/her job.,Is your work physically demanding?,More mentally demanding,More mentally demanding is a rephrasing of work is demanding.,Yes
+Y has just told X that he/she is considering switching his/her job.,Are you interesting in switching careers?,I just want to make a lateral move.,I just want to make a lateral move implies I am interested in switching careers.,Yes
+Y has just told X that he/she is considering switching his/her job.,Is it more in line with your skill set?,It's about the same as my current job in that respect.,It is more in line with my skill set because it is about the same as my current job.,Yes
+Y has just told X that he/she is considering switching his/her job.,Do you spend a lot of time in an office?,It feels more like a shoebox.,The office is not a shoebox.,No
+X wants to know what sorts of books Y likes to read.,Does a long novel sound good?,I usually have several going at once.,A long novel is not the same as several books.,No
+Y has just told X that he/she is considering switching his/her job.,Do you want something in a different field?,I want to work indoors.,I want to work indoors or in a different field.,No
+Y has just told X that he/she is considering switching his/her job.,Do you like your company?,It's fine.,I like my company is a rephrasing of ''I like my company. '',Yes
+Y has just told X that he/she is considering switching his/her job.,Do you need a college degree for the job?,My BA Honours has come in very handy.,BA is not a college degree.,No
+Y has just told X that he/she is considering switching his/her job.,It is about the pay?,I can't live on what I'm getting at the moment.,The subject is either Y or X.,No
+X wants to know what sorts of books Y likes to read.,Do you like mysteries?,I only read them once in a while.,I like mysteries but I only read them once in a while.,No
+Y has just told X that he/she is considering switching his/her job.,Are you not happy with you work conditions?,Not really they are quire bad,Not really they are quire bad is a rephrasing of I am happy with.,Yes
+Y has just told X that he/she is considering switching his/her job.,Do you have a specific job in mind?,I'm looking at programming jobs.,Y is not X.,No
